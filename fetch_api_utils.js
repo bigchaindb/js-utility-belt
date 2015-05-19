@@ -1,3 +1,6 @@
+import GeneralUtils from './general_utils';
+
+// TODO: Create Unittests that test all functions
 let FetchApiUtils = {
 
     /**
@@ -15,10 +18,11 @@ let FetchApiUtils = {
      *
      * CamelCase gets converted to snake_case!
      * 
-     * @param  {[type]}
-     * @return {[type]}
      */
     argsToQueryParams(obj) {
+
+        obj = GeneralUtils.sanitize(obj);
+
         return Object
                 .keys(obj)
                 .map((key, i) => {
