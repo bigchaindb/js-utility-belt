@@ -9,6 +9,11 @@ let FetchApiUtils = {
      *  }
      *
      * and converts it to a query-parameter, which you can append to your URL.
+     * The return looks like this:
+     *
+     * ?page=1&page_size=10
+     *
+     * CamelCase gets converted to snake_case!
      * 
      * @param  {[type]}
      * @return {[type]}
@@ -25,7 +30,9 @@ let FetchApiUtils = {
                         s += '&';
                     }
 
-                    return s + key + '=' + obj[key];
+                    let snakeCaseKey = key.replace(/[A-Z]/, (match) => '_' + match.toLowerCase());
+
+                    return s + snakeCaseKey + '=' + encodeURIComponent(obj[key]);
                 })
                 .join('');
     }
