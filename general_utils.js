@@ -16,6 +16,15 @@ let GeneralUtils = {
             });
 
         return obj;
+    },
+
+    /**
+     * Returns the values of an object.
+     */
+    valuesOfObject(obj) {
+        return Object
+                .keys(obj)
+                .map(key => obj[key]);
     }
 };
 
