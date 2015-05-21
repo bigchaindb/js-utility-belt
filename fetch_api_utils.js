@@ -40,6 +40,20 @@ let FetchApiUtils = {
                     return s + snakeCaseKey + '=' + encodeURIComponent(obj[key]);
                 })
                 .join('');
+    },
+
+    /**
+     * Takes a string and a boolean and generates a string query parameter for 
+     * an API call.
+     */
+    generateOrderingQueryParams(orderBy, orderAsc) {
+        let interpolation = '';
+
+        if(!orderAsc) {
+            interpolation += '-';
+        }
+
+        return interpolation + orderBy;
     }
 };
 
