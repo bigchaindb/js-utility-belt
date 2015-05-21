@@ -10,7 +10,7 @@ let GeneralUtils = {
             .map((key) => {
                 // By matching null with a double equal, we can match undefined and null
                 // http://stackoverflow.com/a/15992131
-                if(obj[key] == null) {
+                if(obj[key] == null || obj[key] === '') {
                     delete obj[key];
                 }
             });
