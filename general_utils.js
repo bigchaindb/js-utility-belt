@@ -35,6 +35,7 @@ let GeneralUtils = {
         l.forEach((num) => sum += parseFloat(num) || 0);
         return sum;
     }
+
 };
 
 export default GeneralUtils;
