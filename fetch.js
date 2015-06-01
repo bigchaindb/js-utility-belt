@@ -52,7 +52,7 @@ class Fetch {
         return url;
     }
 
-    prepareUrl(url, params) {
+    prepareUrl(url, params, attachParamsToQuery) {
         let newUrl = this.getUrl(url);
         let re = /\${(\w+)}/g;
 
@@ -65,7 +65,7 @@ class Fetch {
             return val;
         });
 
-        if (params && Object.keys(params).length > 0) {
+        if (attachParamsToQuery && params && Object.keys(params).length > 0) {
             newUrl += FetchApiUtils.argsToQueryParams(params);
         }
 
@@ -76,22 +76,24 @@ class Fetch {
         options = options || {};
         let merged = this._merge(this.httpOptions, options);
         merged['method'] = verb;
-
-        let promise = _fetch(url, merged);
-        return promise.then(this.unpackResponse)
-                      .then(JSON.parse)
-                      .catch(this.handleFatalError.bind(this))
-                      .then(this.handleAPIError);
+        return _fetch(url, merged)
+                    .then(this.unpackResponse)
+                    .then(JSON.parse)
+                    .catch(this.handleFatalError.bind(this))
+                    .then(this.handleAPIError);
     }
 
-    get(url, params, options) {
+    get(url, params) {
+        let paramsCopy = this._merge(params);
         let newUrl = this.prepareUrl(url, params);
-        return this.request('get', newUrl, options);
+        return this.request('get', newUrl, true);
     }
 
-    post(url, params, options) {
-        options = options || {};
-        return this.request('post', url, options);
+    post(url, params) {
+        let paramsCopy = this._merge(params);
+        let newUrl = this.prepareUrl(url, params);
+        let body = JSON.stringify(params);
+        return this.request('post', url, { body });
     }
 
     defaults(options) {
