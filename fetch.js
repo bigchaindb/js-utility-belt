@@ -52,16 +52,6 @@ class Fetch {
         return url;
     }
 
-    extractParamsFromUrl(url) {
-        let re = /\${(\w+)}/g;
-        let match = null;
-        let results = [];
-        while (match = re.exec(url)) {
-            results.push(match[1]);
-        }
-        return results;
-    }
-
     prepareUrl(url, params) {
         let newUrl = this.getUrl(url);
         let re = /\${(\w+)}/g;
