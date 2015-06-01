@@ -92,7 +92,11 @@ class Fetch {
     post(url, params) {
         let paramsCopy = this._merge(params);
         let newUrl = this.prepareUrl(url, params);
-        let body = JSON.stringify(params);
+        let body = null;
+
+        if (params['body']) {
+            body = JSON.stringify(params['body'])
+        }
         return this.request('post', url, { body });
     }
 
