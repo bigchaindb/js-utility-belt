@@ -85,8 +85,8 @@ class Fetch {
 
     get(url, params) {
         let paramsCopy = this._merge(params);
-        let newUrl = this.prepareUrl(url, params);
-        return this.request('get', newUrl, true);
+        let newUrl = this.prepareUrl(url, params, true);
+        return this.request('get', newUrl);
     }
 
     post(url, params) {
