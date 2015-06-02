@@ -2,6 +2,12 @@ import languages from '../constants/languages';
 
 import { formatText } from './general_utils';
 
+/**
+ * Is used to translate strings to another language. Basically can be used with C's string format method.
+ * @param  {string}    s        The string you want to translate
+ * @param  {array} args         An array of arguments (essentially JavaScript's this.arguments) that can be used to substitute digits and other strings
+ * @return {string}             The formated string
+ */
 export function getLangText(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
     // this is just for testing, as changing the navigator.language wasn't possible
