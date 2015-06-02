@@ -1,5 +1,5 @@
 import { default as _fetch } from 'isomorphic-fetch';
-import FetchApiUtils from '../utils/fetch_api_utils';
+import { argsToQueryParams } from '../utils/fetch_api_utils';
 
 
 class UrlMapError extends Error {};
@@ -66,7 +66,7 @@ class Fetch {
         });
 
         if (attachParamsToQuery && params && Object.keys(params).length > 0) {
-            newUrl += FetchApiUtils.argsToQueryParams(params);
+            newUrl += argsToQueryParams(params);
         }
 
         return newUrl;

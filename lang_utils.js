@@ -2,7 +2,7 @@ import languages from '../constants/languages';
 
 import { formatText } from './general_utils';
 
-let getLangText = function(s, ...args) {
+export function getLangText(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
 
     try {
@@ -21,5 +21,3 @@ let getLangText = function(s, ...args) {
         
     }
 };
-
-export default getLangText;
