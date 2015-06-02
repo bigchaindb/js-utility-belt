@@ -4,6 +4,8 @@ import { formatText } from './general_utils';
 
 export function getLangText(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
+    // this is just for testing, as changing the navigator.language wasn't possible
+    //lang = 'de';
     try {
         if(lang in languages) {
             return formatText(languages[lang][s], args);
