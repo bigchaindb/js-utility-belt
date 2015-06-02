@@ -1,19 +1,24 @@
 import languages from '../constants/languages';
 
-import GeneralUtils from './general_utils';
+import { formatText } from './general_utils';
 
 let getLangText = function(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
 
     try {
         if(lang in languages) {
-            return GeneralUtils.formatText(languages[lang][s], args);
+            return formatText(languages[lang][s], args);
         } else {
             // just use the english language
-            return GeneralUtils.formatText(languages['en-US'][s], args);
+            return formatText(languages['en-US'][s], args);
         }
     } catch(err) {
-        console.error(new Error('Language-string is not in constants file.'));
+        if(!(s in languages[lang])) {
+            console.error(new Error('Language-string is not in constants file for string: ' + s));
+        } else {
+            console.error(err);
+        }
+        
     }
 };
 

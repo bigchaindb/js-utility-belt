@@ -1,4 +1,4 @@
-import GeneralUtils from './general_utils';
+import { sanitize } from './general_utils';
 
 
 // TODO: Create Unittests that test all functions
@@ -22,7 +22,7 @@ let FetchApiUtils = {
      */
     argsToQueryParams(obj) {
 
-        obj = GeneralUtils.sanitize(obj);
+        obj = sanitize(obj);
 
         return Object
                 .keys(obj)
