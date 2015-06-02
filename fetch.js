@@ -1,4 +1,5 @@
 import { default as _fetch } from 'isomorphic-fetch';
+
 import { argsToQueryParams } from '../utils/fetch_api_utils';
 
 
@@ -55,7 +56,7 @@ class Fetch {
     prepareUrl(url, params, attachParamsToQuery) {
         let newUrl = this.getUrl(url);
         let re = /\${(\w+)}/g;
-        
+
         newUrl = newUrl.replace(re, (match, key) => {
             let val = params[key]
             if (!val) {
