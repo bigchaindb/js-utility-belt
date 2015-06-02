@@ -1,18 +1,20 @@
 import languages from '../constants/languages';
-import template from 'lodash.template';
 
-let getText = function(s, ...args) {
+import GeneralUtils from './general_utils';
+
+let getLangText = function(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
+
     try {
         if(lang in languages) {
-            return languages[lang][s];
+            return GeneralUtils.formatText(languages[lang][s], args);
         } else {
             // just use the english language
-            return languages['en-US'][s];
+            return GeneralUtils.formatText(languages['en-US'][s], args);
         }
     } catch(err) {
-        console.error(err);
+        console.error(new Error('Language-string is not in constants file.'));
     }
 };
 
-export default getText;
+export default getLangText;
