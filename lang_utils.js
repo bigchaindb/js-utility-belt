@@ -11,7 +11,7 @@ import { formatText } from './general_utils';
 export function getLangText(s, ...args) {
     let lang = navigator.language || navigator.userLanguage;
     // this is just for testing, as changing the navigator.language wasn't possible
-    //lang = 'de';
+    lang = 'de';
     try {
         if(lang in languages) {
             return formatText(languages[lang][s], args);
@@ -21,7 +21,7 @@ export function getLangText(s, ...args) {
         }
     } catch(err) {
         if(!(s in languages[lang])) {
-            console.error(new Error('Language-string is not in constants file for string: ' + s));
+            console.error(new Error('Language-string is not in constants file. Add: "' + s + '" to the "' + lang + '" language file.'));
         } else {
             console.error(err);
         }
