@@ -1,3 +1,5 @@
+'use strict';
+
 import { sanitize } from './general_utils';
 
 // TODO: Create Unittests that test all functions
@@ -16,7 +18,7 @@ import { sanitize } from './general_utils';
      * ?page=1&page_size=10
      *
      * CamelCase gets converted to snake_case!
-     * 
+     *
      */
 export function argsToQueryParams(obj) {
 
@@ -38,10 +40,10 @@ export function argsToQueryParams(obj) {
                 return s + snakeCaseKey + '=' + encodeURIComponent(obj[key]);
             })
             .join('');
-};
+}
 
 /**
- * Takes a string and a boolean and generates a string query parameter for 
+ * Takes a string and a boolean and generates a string query parameter for
  * an API call.
  */
 export function generateOrderingQueryParams(orderBy, orderAsc) {
@@ -52,11 +54,11 @@ export function generateOrderingQueryParams(orderBy, orderAsc) {
     }
 
     return interpolation + orderBy;
-};
+}
 
 export function status(response) {
     if (response.status >= 200 && response.status < 300) {
-        return response
+        return response;
     }
-    throw new Error(response.json())
-};
+    throw new Error(response.json());
+}

@@ -1,3 +1,5 @@
+'use strict';
+
 import languages from '../constants/languages';
 
 import { formatText } from './general_utils';
@@ -27,4 +29,4 @@ export function getLangText(s, ...args) {
         }
         
     }
-};
+}

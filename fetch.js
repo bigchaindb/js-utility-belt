@@ -1,11 +1,13 @@
+'use strict';
+
 import { default as _fetch } from 'isomorphic-fetch';
 
 import { argsToQueryParams } from '../utils/fetch_api_utils';
 
 
-class UrlMapError extends Error {};
-class ServerError extends Error {};
-class APIError extends Error {};
+class UrlMapError extends Error {}
+class ServerError extends Error {}
+class APIError extends Error {}
 
 
 class Fetch {
@@ -33,7 +35,7 @@ class Fetch {
     }
 
     handleAPIError(json) {
-        if (!json['success']) {
+        if (!json.success) {
             let error = new APIError();
             error.json = json;
             throw error;
@@ -58,7 +60,7 @@ class Fetch {
         let re = /\${(\w+)}/g;
 
         newUrl = newUrl.replace(re, (match, key) => {
-            let val = params[key]
+            let val = params[key];
             if (!val) {
                 throw new Error(`Cannot find param ${key}`);
             }
@@ -76,7 +78,7 @@ class Fetch {
     request(verb, url, options) {
         options = options || {};
         let merged = this._merge(this.httpOptions, options);
-        merged['method'] = verb;
+        merged.method = verb;
         return _fetch(url, merged)
                     .then(this.unpackResponse)
                     .then(JSON.parse)
@@ -95,8 +97,8 @@ class Fetch {
         let newUrl = this.prepareUrl(url, params);
         let body = null;
 
-        if (params['body']) {
-            body = JSON.stringify(params['body'])
+        if (params.body) {
+            body = JSON.stringify(params.body);
         }
         return this.request('post', url, { body });
     }
