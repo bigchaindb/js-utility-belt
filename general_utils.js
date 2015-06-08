@@ -1,15 +1,13 @@
 'use strict';
 
-// TODO: Create Unittests that test all functions
-
 /**
- * Takes an object and deletes all keys that are 
+ * Takes an object and deletes all keys that are
  *
  * - empty strings; or
  * - null; or
  * - undefined
- * 
- * 
+ *
+ *
  * @param  {object} obj regular javascript object
  * @return {object}     regular javascript object without null values or empty strings
  */
