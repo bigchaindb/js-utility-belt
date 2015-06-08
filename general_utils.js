@@ -2,6 +2,17 @@
 
 // TODO: Create Unittests that test all functions
 
+/**
+ * Takes an object and deletes all keys that are 
+ *
+ * - empty strings; or
+ * - null; or
+ * - undefined
+ * 
+ * 
+ * @param  {object} obj regular javascript object
+ * @return {object}     regular javascript object without null values or empty strings
+ */
 export function sanitize(obj) {
     Object
         .keys(obj)
@@ -17,15 +28,6 @@ export function sanitize(obj) {
 }
 
 /**
- * Returns the values of an object.
- */
-export function valuesOfObject(obj) {
-    return Object
-            .keys(obj)
-            .map(key => obj[key]);
-}
-
-/**
  * Sums up a list of numbers. Like a Epsilon-math-kinda-sum...
  */
 export function sumNumList(l) {
@@ -37,17 +39,14 @@ export function sumNumList(l) {
 /*
     Taken from http://stackoverflow.com/a/4795914/1263876
     Behaves like C's format string function
-
-    REFACTOR TO ES6 (let instead of var)
-
 */
 export function formatText() {
-    var args = arguments,
+    let args = arguments,
     string = args[0],
     i = 1;
-    return string.replace(/%((%)|s|d)/g, function (m) {
+    return string.replace(/%((%)|s|d)/g, (m) => {
         // m is the matched format, e.g. %s, %d
-        var val = null;
+        let val = null;
         if (m[2]) {
             val = m[2];
         } else {
@@ -79,7 +78,6 @@ export function mergeOptions(...l) {
     for(let i = 1; i < l.length; i++) {
         newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
     }
-
     return newObj;
 }
 
@@ -92,7 +90,16 @@ export function mergeOptions(...l) {
  */
 function _mergeOptions(obj1, obj2){
     let obj3 = {};
-    for (let attrname in obj1) { obj3[attrname] = obj1[attrname]; }
-    for (let attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    
+    for (let attrname in obj1) {
+        obj3[attrname] = obj1[attrname];
+    }
+    for (let attrname in obj2) {
+        if(attrname in obj3) {
+            throw Error('Overwrite Conflict: You\'re merging two objects with the same keys: ' + attrname);
+        } else {
+            obj3[attrname] = obj2[attrname];
+        }
+    }
     return obj3;
 }
