@@ -92,6 +92,12 @@ class Fetch {
         return this.request('get', newUrl);
     }
 
+    delete(url, params) {
+        let paramsCopy = this._merge(params);
+        let newUrl = this.prepareUrl(url, paramsCopy, true);
+        return this.request('delete', newUrl);
+    }
+
     post(url, params) {
         let paramsCopy = this._merge(params);
         let newUrl = this.prepareUrl(url, paramsCopy);
