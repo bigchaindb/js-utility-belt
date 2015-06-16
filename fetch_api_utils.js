@@ -62,3 +62,11 @@ export function status(response) {
     }
     throw new Error(response.json());
 }
+
+export function getCookie(name) {
+    let value = '; ' + document.cookie;
+    let parts = value.split('; ' + name + '=');
+    if (parts.length === 2) {
+        return parts.pop().split(';').shift();
+    }
+}

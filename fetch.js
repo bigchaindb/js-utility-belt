@@ -2,7 +2,7 @@
 
 import { default as _fetch } from 'isomorphic-fetch';
 
-import { argsToQueryParams } from '../utils/fetch_api_utils';
+import { argsToQueryParams, getCookie } from '../utils/fetch_api_utils';
 
 
 class UrlMapError extends Error {}
@@ -78,6 +78,7 @@ class Fetch {
     request(verb, url, options) {
         options = options || {};
         let merged = this._merge(this.httpOptions, options);
+        this.httpOptions.headers['X-CSRFToken'] = getCookie('csrftoken');
         merged.method = verb;
         return _fetch(url, merged)
                     .then(this.unpackResponse)
@@ -106,6 +107,7 @@ class Fetch {
         if (paramsCopy && paramsCopy.body) {
             body = JSON.stringify(paramsCopy.body);
         }
+
         return this.request('post', newUrl, { body });
     }
 
