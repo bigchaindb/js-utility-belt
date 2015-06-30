@@ -70,3 +70,38 @@ export function getCookie(name) {
         return parts.pop().split(';').shift();
     }
 }
+
+/*
+
+    Given a url for an image, this method fetches it and returns a promise that resolves to
+    a blob object.
+    It can be used to create a 64base encoded data url.
+
+    Taken from: http://jsfiddle.net/jan_miksovsky/yy7zs/
+
+ */
+export function fetchImageAsBlob(url) {
+    return new Promise((resolve, reject) => {
+        let xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+
+        // Ask for the result as an ArrayBuffer.
+        xhr.responseType = 'arraybuffer';
+
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState === 4 && xhr.status >= 400) {
+                reject(xhr.statusText);
+            }
+        };
+
+        xhr.onload = function() {
+            // Obtain a blob: URL for the image data.
+            let arrayBufferView = new Uint8Array(this.response);
+            let blob = new Blob([arrayBufferView], {type: 'image/jpeg'});
+            resolve(blob);
+        };
+
+        xhr.send();
+    });
+}
