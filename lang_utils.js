@@ -23,7 +23,8 @@ export function getLangText(s, ...args) {
         }
     } catch(err) {
         if(!(s in languages[lang])) {
-            //console.error(new Error('Language-string is not in constants file. Add: "' + s + '" to the "' + lang + '" language file.'));
+            console.warn('Language-string is not in constants file. Add: "' + s + '" to the "' + lang + '" language file. Defaulting to keyname');
+            return s;
         } else {
             console.error(err);
         }
