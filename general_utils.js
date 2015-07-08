@@ -70,11 +70,17 @@ export function formatText() {
 function _doesObjectListHaveDuplicates(l) {
     let mergedList = [];
 
-    l = l.map((obj) => Object.keys(obj));
+    l = l.map((obj) => {
+        if(!obj) {
+            throw new Error('The object you are trying to merge is null instead of an empty object');
+        }
+
+        return Object.keys(obj);
+    });
 
     // Taken from: http://stackoverflow.com/a/10865042
     // How to flatten an array of arrays in javascript.
-    // If two objects contain the same key, then these two keys 
+    // If two objects contain the same key, then these two keys
     // will actually be represented in the merged array
     mergedList = mergedList.concat.apply(mergedList, l);
 
@@ -102,6 +108,7 @@ export function mergeOptions(...l) {
     for(let i = 1; i < l.length; i++) {
         newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
     }
+
     return newObj;
 }
 
