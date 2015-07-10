@@ -113,6 +113,24 @@ export function mergeOptions(...l) {
 }
 
 /**
+ * Takes a list of object and merges their keys to one object.
+ * Uses mergeOptions for two objects.
+ * @param  {[type]} l [description]
+ * @return {[type]}   [description]
+ */
+export function mergeOptionsWithDuplicates(...l) {
+    // If the objects submitted in the list have duplicates,in their key names,
+    // abort the merge and tell the function's user to check his objects.
+    let newObj = {};
+
+    for(let i = 1; i < l.length; i++) {
+        newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
+    }
+
+    return newObj;
+}
+
+/**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
  * @param obj1
  * @param obj2
