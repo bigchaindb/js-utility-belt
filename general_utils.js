@@ -3,21 +3,22 @@
 /**
  * Takes an object and deletes all keys that are
  *
- * - empty strings; or
- * - null; or
- * - undefined
- *
+ * tagged as false by the passed in filter function
  *
  * @param  {object} obj regular javascript object
  * @return {object}     regular javascript object without null values or empty strings
  */
-export function sanitize(obj) {
+export function sanitize(obj, filterFn) {
+    if(!filterFn) {
+        // By matching null with a double equal, we can match undefined and null
+        // http://stackoverflow.com/a/15992131
+        filterFn = (val) => val == null || val === '';
+    }
+
     Object
         .keys(obj)
         .map((key) => {
-            // By matching null with a double equal, we can match undefined and null
-            // http://stackoverflow.com/a/15992131
-            if(obj[key] == null || obj[key] === '') {
+            if(filterFn(obj[key])) {
                 delete obj[key];
             }
         });
