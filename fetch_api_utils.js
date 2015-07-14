@@ -79,6 +79,8 @@ export function getCookie(name) {
 
     Taken from: http://jsfiddle.net/jan_miksovsky/yy7zs/
 
+    CURRENTLY NOT USED...
+
  */
 export function fetchImageAsBlob(url) {
     return new Promise((resolve, reject) => {
