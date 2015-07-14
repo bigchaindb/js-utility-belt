@@ -132,6 +132,19 @@ export function mergeOptionsWithDuplicates(...l) {
 }
 
 /**
+ * In place update of a dictionary
+ */
+export function update(a, ...l) {
+    for(let i = 0; i < l.length; i++) {
+        for (let attrname in l[i]) {
+            a[attrname] = l[i][attrname];
+        }
+    }
+
+    return a;
+}
+
+/**
  * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
  * @param obj1
  * @param obj2
