@@ -4,6 +4,14 @@ import languages from '../constants/languages';
 
 import { formatText } from './general_utils';
 
+
+export function getLang() {
+    // this is just for testing, as changing the navigator.language wasn't possible
+    // return 'fr';
+    return navigator.languages ? navigator.languages[0] :
+                                 (navigator.language || navigator.userLanguage);
+}
+
 /**
  * Is used to translate strings to another language. Basically can be used with C's string format method.
  * @param  {string}    s        The string you want to translate
@@ -11,9 +19,7 @@ import { formatText } from './general_utils';
  * @return {string}             The formated string
  */
 export function getLangText(s, ...args) {
-    let lang = navigator.language || navigator.userLanguage;
-    // this is just for testing, as changing the navigator.language wasn't possible
-    //ang = 'de';
+    let lang = getLang();
     try {
         if(lang in languages) {
             return formatText(languages[lang][s], args);
