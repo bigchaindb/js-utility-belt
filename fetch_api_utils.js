@@ -1,6 +1,7 @@
 'use strict';
 
 import { sanitize } from './general_utils';
+import AppConstants from './constants_utils';
 
 // TODO: Create Unittests that test all functions
 
@@ -67,7 +68,7 @@ export function getCookie(name) {
     let parts = document.cookie.split(';');
     
     for(let i = 0; i < parts.length; i++) {
-        if(parts[i].indexOf('csrftoken=') > -1) {
+        if(parts[i].indexOf(AppConstants.csrftoken + '=') > -1) {
             return parts[i].split('=').pop();
         }
     }
