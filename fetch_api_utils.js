@@ -72,7 +72,6 @@ export function getCookie(name) {
             return parts[i].split('=').pop();
         }
     }
-    console.warn('There wasn\'t a cookie with name: ' + name + ' found.');
 }
 
 /*
