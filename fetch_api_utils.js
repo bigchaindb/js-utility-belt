@@ -72,7 +72,7 @@ export function getCookie(name) {
             return parts[i].split('=').pop();
         }
     }
-    throw new Error('There wasn\'t a cookie with name: ' + name + ' found.');
+    console.warn('There wasn\'t a cookie with name: ' + name + ' found.');
 }
 
 /*
