@@ -1,7 +1,7 @@
 'use strict';
 
 import { sanitize } from './general_utils';
-import AppConstants from './constants_utils';
+import AppConstants from '../constants/application_constants';
 
 // TODO: Create Unittests that test all functions
 
