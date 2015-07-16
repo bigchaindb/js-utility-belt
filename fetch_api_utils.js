@@ -64,11 +64,14 @@ export function status(response) {
 }
 
 export function getCookie(name) {
-    let value = '; ' + document.cookie;
-    let parts = value.split('; ' + name + '=');
-    if (parts.length === 2) {
-        return parts.pop().split(';').shift();
+    let parts = document.cookie.split(';');
+    
+    for(let i = 0; i < parts.length; i++) {
+        if(parts[i].indexOf('csrftoken=') > -1) {
+            return parts[i].split('=').pop();
+        }
     }
+    throw new Error('There wasn\'t a cookie with name: ' + name + ' found.');
 }
 
 /*
