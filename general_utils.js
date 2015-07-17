@@ -117,7 +117,7 @@ export function mergeOptions(...l) {
  * Merges a number of objects even if there're having duplicates.
  *
  * DOES NOT RETURN AN ERROR!
- * 
+ *
  * Takes a list of object and merges their keys to one object.
  * Uses mergeOptions for two objects.
  * @param  {[type]} l [description]
