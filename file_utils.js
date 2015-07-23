@@ -8,7 +8,7 @@ import SparkMD5 from 'spark-md5';
  * @param  {string} text regular javascript string
  * @return {string}      regular javascript string
  */
-export function makeTextFile(text) {
+function makeTextFile(text) {
     let data = new Blob([text], {type: 'text/plain'});
     return window.URL.createObjectURL(data);
 }
@@ -20,42 +20,46 @@ export function makeTextFile(text) {
  * @return {string}      regular javascript string
  */
 export function computeHashOfFile(file) {
-    let blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
-        chunkSize = 2097152,                             // Read in chunks of 2MB
-        chunks = Math.ceil(file.size / chunkSize),
-        currentChunk = 0,
-        spark = new SparkMD5.ArrayBuffer(),
-        fileReader = new FileReader();
+    return new Promise((resolve, reject) => {
+        let blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
+        let chunkSize = 2097152; // Read in chunks of 2MB
+        let chunks = Math.ceil(file.size / chunkSize);
+        let currentChunk = 0;
+        let spark = new SparkMD5.ArrayBuffer();
+        let fileReader = new FileReader();
 
-    let startTime = new Date();
-    fileReader.onload = function (e) {
-        //console.log('read chunk nr', currentChunk + 1, 'of', chunks);
-        spark.append(e.target.result);                   // Append array buffer
-        currentChunk++;
+        let startTime = new Date();
+        fileReader.onload = function(e) {
+            //console.log('read chunk nr', currentChunk + 1, 'of', chunks);
+            spark.append(e.target.result); // Append array buffer
+            currentChunk++;
 
-        if (currentChunk < chunks) {
-            loadNext();
-        } else {
-            let fileHash = spark.end();
-            console.info('computed hash %s (took %d s)',
-                fileHash,
-                Math.round(((new Date() - startTime) / 1000) % 60));  // Compute hash
-            let hashFile = this.makeTextFile(fileHash);
-            console.info('hash: ', hashFile);
-            return hashFile;
+            if (currentChunk < chunks) {
+                loadNext();
+            } else {
+                let fileHash = spark.end();
+
+                console.info('computed hash %s (took %d s)',
+                    fileHash,
+                    Math.round(((new Date() - startTime) / 1000) % 60)); // Compute hash
+
+                let hashFile = makeTextFile(fileHash);
+                console.info('hash: ', hashFile);
+                resolve(hashFile);
+            }
+        }.bind(this);
+
+        fileReader.onerror = function () {
+            reject(new Error('We weren\' able to hash your file locally. Try to upload it manually or consider contact us.'));
+        };
+
+        function loadNext() {
+            var start = currentChunk * chunkSize,
+                end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+
+            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
         }
-    }.bind(this);
 
-    fileReader.onerror = function () {
-        console.warn('oops, something went wrong.');
-    };
-    function loadNext() {
-        var start = currentChunk * chunkSize,
-            end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
-
-        fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
-    }
-
-    loadNext();
-
+        loadNext();
+    });
 }
