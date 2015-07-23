@@ -2,6 +2,8 @@
 
 import SparkMD5 from 'spark-md5';
 
+import { getLangText } from './lang_utils';
+
 /**
  * Takes a string, creates a text file and returns the URL
  *
@@ -55,7 +57,7 @@ export function computeHashOfFile(file) {
         }.bind(this);
 
         fileReader.onerror = function () {
-            reject(new Error('We weren\'t able to hash your file locally. Try to upload it manually or consider contact us.'));
+            reject(new Error(getLangText('We weren\'t able to hash your file locally. Try to upload it manually or consider contact us.')));
         };
 
         function loadNext() {
