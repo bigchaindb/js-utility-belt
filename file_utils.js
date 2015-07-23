@@ -8,9 +8,15 @@ import SparkMD5 from 'spark-md5';
  * @param  {string} text regular javascript string
  * @return {string}      regular javascript string
  */
-function makeTextFile(text) {
-    let data = new Blob([text], {type: 'text/plain'});
-    return window.URL.createObjectURL(data);
+function makeTextFile(text, file) {
+    let textFileBlob = new Blob([text], {type: 'text/plain'});
+    let textFile = new File([textFileBlob], 'hash-of-' + file.name + '.txt', {
+        lastModifiedDate: file.lastModifiedDate,
+        lastModified: file.lastModified,
+        type: 'text/plain'
+    });
+
+    return textFile;
 }
 
 /**
@@ -43,9 +49,8 @@ export function computeHashOfFile(file) {
                     fileHash,
                     Math.round(((new Date() - startTime) / 1000) % 60)); // Compute hash
 
-                let hashFile = makeTextFile(fileHash);
-                console.info('hash: ', hashFile);
-                resolve(hashFile);
+                let blobTextFile = makeTextFile(fileHash, file);
+                resolve(blobTextFile);
             }
         }.bind(this);
 
