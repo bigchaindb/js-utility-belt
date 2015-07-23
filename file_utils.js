@@ -50,7 +50,7 @@ export function computeHashOfFile(file) {
         }.bind(this);
 
         fileReader.onerror = function () {
-            reject(new Error('We weren\' able to hash your file locally. Try to upload it manually or consider contact us.'));
+            reject(new Error('We weren\'t able to hash your file locally. Try to upload it manually or consider contact us.'));
         };
 
         function loadNext() {
