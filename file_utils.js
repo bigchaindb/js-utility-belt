@@ -37,6 +37,9 @@ export function computeHashOfFile(file) {
         let fileReader = new FileReader();
 
         let startTime = new Date();
+
+        // comment: We should convert this to es6 at some point, however if so please consider that
+        // an arrow function will get rid of the function's scope...
         fileReader.onload = function(e) {
             //console.log('read chunk nr', currentChunk + 1, 'of', chunks);
             spark.append(e.target.result); // Append array buffer
