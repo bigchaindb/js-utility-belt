@@ -69,11 +69,13 @@ export function computeHashOfFile(file) {
                 end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
 
             // send progress
+            // Due to the fact that progressHandler and notify are going to be removed in v2
+            // of Q, the functionality of throwing errors in the progressHandler will not be implemented
+            // anymore. To still be able to throw an error however, we can just expose the promise's reject
+            // method to the .progress function to stop the execution immediately.
             notify({
                 progress: start / file.size,
-                handleError(err) {
-                    reject(err);
-                }
+                reject
             });
             
             fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
