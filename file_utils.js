@@ -29,7 +29,7 @@ function makeTextFile(text, file) {
  * @return {string}      regular javascript string
  */
 export function computeHashOfFile(file) {
-    return Q.Promise((resolve, reject) => {
+    return Q.Promise((resolve, reject, notify) => {
         let blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
         let chunkSize = 2097152; // Read in chunks of 2MB
         let chunks = Math.ceil(file.size / chunkSize);
@@ -68,6 +68,8 @@ export function computeHashOfFile(file) {
             var start = currentChunk * chunkSize,
                 end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
 
+            // send progress
+            notify(start / file.size);
             fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
         }
 
