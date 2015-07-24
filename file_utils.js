@@ -1,5 +1,6 @@
 'use strict';
 
+import Q from 'q';
 import SparkMD5 from 'spark-md5';
 
 import { getLangText } from './lang_utils';
@@ -28,7 +29,7 @@ function makeTextFile(text, file) {
  * @return {string}      regular javascript string
  */
 export function computeHashOfFile(file) {
-    return new Promise((resolve, reject) => {
+    return Q.Promise((resolve, reject) => {
         let blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
         let chunkSize = 2097152; // Read in chunks of 2MB
         let chunks = Math.ceil(file.size / chunkSize);

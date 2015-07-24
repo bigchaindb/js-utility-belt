@@ -1,5 +1,7 @@
 'use strict';
 
+import Q from 'q';
+
 import { sanitize } from './general_utils';
 import AppConstants from '../constants/application_constants';
 
@@ -86,7 +88,7 @@ export function getCookie(name) {
 
  */
 export function fetchImageAsBlob(url) {
-    return new Promise((resolve, reject) => {
+    return Q.Promise((resolve, reject) => {
         let xhr = new XMLHttpRequest();
 
         xhr.open('GET', url, true);
