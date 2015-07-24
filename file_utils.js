@@ -69,7 +69,13 @@ export function computeHashOfFile(file) {
                 end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
 
             // send progress
-            notify(start / file.size);
+            notify({
+                progress: start / file.size,
+                handleError(err) {
+                    reject(err);
+                }
+            });
+            
             fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
         }
 
