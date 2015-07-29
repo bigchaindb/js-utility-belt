@@ -166,3 +166,15 @@ function _mergeOptions(obj1, obj2) {
     }
     return obj3;
 }
+
+/**
+ * Escape HTML in a string so it can be injected safely using
+ * React's `dangerouslySetInnerHTML`
+ *
+ * @param s the string to be sanitized
+ *
+ * Taken from: http://stackoverflow.com/a/17546215/597097
+ */
+export function escapeHTML(s) {
+    return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
+}
