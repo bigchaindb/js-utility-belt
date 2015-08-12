@@ -178,25 +178,3 @@ function _mergeOptions(obj1, obj2) {
 export function escapeHTML(s) {
     return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
 }
-
-/**
- * Converts a date object to a string.
- * Taken from: http://stackoverflow.com/a/4929629/1263876
- * @param  {date} date a javascript date
- * @return {string}      a string, in format: DD-MM-YYY
- */
-export function dateToString(date) {
-    var dd = date.getDate();
-    var mm = date.getMonth() + 1; //January is 0!
-    var yyyy = date.getFullYear();
-
-    if(dd < 10) {
-        dd = '0' + dd;
-    }
-
-    if(mm < 10) {
-        mm = '0' + mm;
-    }
-
-    return dd + '-' + mm + '-' + yyyy;
-}
