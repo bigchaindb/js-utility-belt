@@ -27,6 +27,23 @@ export function sanitize(obj, filterFn) {
 }
 
 /**
+ * Removes all falsy values (undefined, null, false, ...) from a list/array
+ * @param  {array} l the array to sanitize
+ * @return {array}   the sanitized array
+ */
+export function sanitizeList(l) {
+    let sanitizedList = [];
+
+    for(let i = 0; i < l.length; i++) {
+        if(l[i]) {
+            sanitizedList.push(l[i]);
+        }
+    }
+
+    return sanitizedList;
+}
+
+/**
  * Sums up a list of numbers. Like a Epsilon-math-kinda-sum...
  */
 export function sumNumList(l) {
