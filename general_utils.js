@@ -52,6 +52,19 @@ export function sumNumList(l) {
     return sum;
 }
 
+export function excludePropFromObject(obj, propList){
+    let clonedObj = mergeOptions({},obj);
+    for (let item in propList){
+        console.log(item);
+        if (clonedObj[propList[item]]){
+            console.log('deleting... ');
+            delete clonedObj[propList[item]];
+        }
+    }
+    console.log(clonedObj);
+    return clonedObj;
+}
+
 /*
     Taken from http://stackoverflow.com/a/4795914/1263876
     Behaves like C's format string function
