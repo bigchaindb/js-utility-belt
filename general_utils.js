@@ -215,10 +215,10 @@ export function excludePropFromObject(obj, propList){
  * @return {string}             The truncated text
  */
 export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
-    let wrappedText = '';
+    let truncatedText = '';
 
-    wrappedText = text.slice(0, charIndex);
-    wrappedText += text.length > charIndex ? replacement : '';
+    truncatedText = text.slice(0, charIndex);
+    truncatedText += text.length > charIndex ? replacement : '';
 
-    return wrappedText;
+    return truncatedText;
 }
