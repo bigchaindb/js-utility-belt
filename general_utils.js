@@ -209,12 +209,12 @@ export function excludePropFromObject(obj, propList){
 /**
  * Takes a string and breaks it at the supplied index and replaces it
  * with a (potentially) short string that also has been provided
- * @param  {string} text        The string to wrap
- * @param  {number} charIndex   The char number at which the text should be wrapped
+ * @param  {string} text        The string to truncate
+ * @param  {number} charIndex   The char number at which the text should be truncated
  * @param  {String} replacement All text after charIndex will be replaced with this string
- * @return {string}             The wrapped text
+ * @return {string}             The truncated text
  */
-export function wrapTextAtCharIndex(text, charIndex, replacement = '...') {
+export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
     let wrappedText = '';
 
     wrappedText = text.slice(0, charIndex);
