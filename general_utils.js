@@ -205,3 +205,20 @@ export function excludePropFromObject(obj, propList){
     }
     return clonedObj;
 }
+
+/**
+ * Takes a string and breaks it at the supplied index and replaces it
+ * with a (potentially) short string that also has been provided
+ * @param  {string} text        The string to wrap
+ * @param  {number} charIndex   The char number at which the text should be wrapped
+ * @param  {String} replacement All text after charIndex will be replaced with this string
+ * @return {string}             The wrapped text
+ */
+export function wrapTextAtCharIndex(text, charIndex, replacement = '...') {
+    let wrappedText = '';
+
+    wrappedText = text.slice(0, charIndex);
+    wrappedText += text.length > charIndex ? replacement : '';
+
+    return wrappedText;
+}
