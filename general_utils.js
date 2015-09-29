@@ -222,3 +222,14 @@ export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
 
     return truncatedText;
 }
+
+/**
+ * Extracts the user's subdomain from the browser's window.
+ * If no subdomain is found (for example on a naked domain), the default "www" is just assumed.
+ * @return {string} subdomain as a string
+ */
+export function getSubdomain() {
+    let { host } = window.location;
+    let matchedHost = host.match(/(([^.]+)\.)?(.*)\.(.*)/);
+    return matchedHost[2] || 'www';
+}
