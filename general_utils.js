@@ -230,6 +230,6 @@ export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
  */
 export function getSubdomain() {
     let { host } = window.location;
-    let matchedHost = host.match(/(([^.]+)\.)?(.*)\.(.*)/);
-    return matchedHost[2] || 'www';
+    let tokens = host.split('.');
+    return tokens.length > 2 ? tokens[0] : 'www';
 }
