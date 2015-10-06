@@ -3,9 +3,9 @@
  */
 'use strict';
 
-// faviconType: string, is the type of the favicon, such as link, meta, etc.
-//faviconId id of the favicon
-// faviconDict: hash table containing the attributes of the relevant favicon
+// elementType: string, is the type of the element, such as link, meta, etc.
+// elementId id of the element
+// elementAttributes: hash table containing the attributes of the relevant element
 
 let constructHeadElement = function(elementType, elementId, elementAttributes) {
     console.log('setfavicon invoked');
