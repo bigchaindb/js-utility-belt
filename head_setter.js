@@ -8,18 +8,17 @@
 // elementAttributes: hash table containing the attributes of the relevant element
 
 let constructHeadElement = function(elementType, elementId, elementAttributes) {
-    console.log('setfavicon invoked');
     var head = (document.head || document.getElementsByTagName('head')[0]);
     var element = document.createElement(elementType);
     var oldElement = document.getElementById(elementId);
     try {
         for (let k in elementAttributes){
-            console.log('Setting ', k, elementAttributes[k]);
             element.setAttribute(k, elementAttributes[k]);
         }
     }
     catch(e){
-        console.log(e.message());
+        console.log(e.message);
+        console.log(elementAttributes);
     }
     if (oldElement) {
         head.removeChild(oldElement);
@@ -32,12 +31,14 @@ let constructHeadElement = function(elementType, elementId, elementAttributes) {
 // {link : {id1: {rel: ... }}}
 // traverses a tree of depth 3 (no backtracking)
 export function constructHead(headObject){
-    console.log('Going to set all favicons');
-    console.log(headObject);
     for (let k in headObject){
         let favicons = headObject[k];
         for (let f in favicons){
             constructHeadElement(k, f, favicons[f]);
         }
     }
+}
+
+export function setTitle(titleString){
+    document.title = titleString;
 }
