@@ -13,13 +13,17 @@ let constructHeadElement = function(elementType, elementId, elementAttributes) {
     var oldElement = document.getElementById(elementId);
     try {
         for (let k in elementAttributes){
-            element.setAttribute(k, elementAttributes[k]);
+            try {
+                element.setAttribute(k, elementAttributes[k]);
+            }
+            catch(e){
+                console.log(e.message);
+                console.log(elementAttributes);
+                continue;
+            }
         }
     }
-    catch(e){
-        console.log(e.message);
-        console.log(elementAttributes);
-    }
+
     if (oldElement) {
         head.removeChild(oldElement);
     }
