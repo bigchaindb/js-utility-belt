@@ -1,13 +1,10 @@
-/**
- * Created by cevo on 06.10.15.
- */
 'use strict';
 
 // elementType: string, is the type of the element, such as link, meta, etc.
 // elementId id of the element
 // elementAttributes: hash table containing the attributes of the relevant element
 
-let constructHeadElement = function(elementType, elementId, elementAttributes) {
+function constructHeadElement(elementType, elementId, elementAttributes) {
     let head = (document.head || document.getElementsByTagName('head')[0]);
     let element = document.createElement(elementType);
     let oldElement = document.getElementById(elementId);
@@ -26,7 +23,7 @@ let constructHeadElement = function(elementType, elementId, elementAttributes) {
     }
     head.appendChild(element);
     return this;
-};
+}
 
 // Accepts a dictionary of dictionaries which comprises a part or all of html head part
 // {link : {id1: {rel: ... }}}
