@@ -8,22 +8,19 @@
 // elementAttributes: hash table containing the attributes of the relevant element
 
 let constructHeadElement = function(elementType, elementId, elementAttributes) {
-    var head = (document.head || document.getElementsByTagName('head')[0]);
-    var element = document.createElement(elementType);
-    var oldElement = document.getElementById(elementId);
-    try {
-        for (let k in elementAttributes){
-            try {
-                element.setAttribute(k, elementAttributes[k]);
-            }
-            catch(e){
-                console.log(e.message);
-                console.log(elementAttributes);
-                continue;
-            }
+    let head = (document.head || document.getElementsByTagName('head')[0]);
+    let element = document.createElement(elementType);
+    let oldElement = document.getElementById(elementId);
+    for (let k in elementAttributes){
+        try {
+            element.setAttribute(k, elementAttributes[k]);
+        }
+        catch(e){
+            console.log(e.message);
+            console.log(elementAttributes);
+            continue;
         }
     }
-
     if (oldElement) {
         head.removeChild(oldElement);
     }
