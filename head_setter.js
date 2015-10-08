@@ -10,6 +10,8 @@ function constructHeadElement(elementType, elementId, elementAttributes) {
     let oldElement = document.getElementById(elementId);
     for (let k in elementAttributes){
         try {
+            console.log('Setting favicons');
+            console.log(elementAttributes[k]);
             element.setAttribute(k, elementAttributes[k]);
         }
         catch(e){
