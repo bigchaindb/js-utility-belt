@@ -8,6 +8,7 @@ function constructHeadElement(elementType, elementId, elementAttributes) {
     let head = (document.head || document.getElementsByTagName('head')[0]);
     let element = document.createElement(elementType);
     let oldElement = document.getElementById(elementId);
+    element.setAttribute('id', elementId);
     for (let k in elementAttributes){
         try {
             element.setAttribute(k, elementAttributes[k]);
