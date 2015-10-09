@@ -23,7 +23,6 @@ function constructHeadElement(elementType, elementId, elementAttributes) {
         head.removeChild(oldElement);
     }
     head.appendChild(element);
-    return this;
 }
 
 // Accepts a dictionary of dictionaries which comprises a part or all of html head part
