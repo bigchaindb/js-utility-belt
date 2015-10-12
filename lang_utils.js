@@ -30,7 +30,7 @@ export function getLangText(s, ...args) {
     } catch(err) {
         //if(!(s in languages[lang])) {
         //console.warn('Language-string is not in constants file. Add: "' + s + '" to the "' + lang + '" language file. Defaulting to keyname');
-        return s;
+        return formatText(s, args);
         //} else {
         //    console.error(err);
         //}

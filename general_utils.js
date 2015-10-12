@@ -27,6 +27,23 @@ export function sanitize(obj, filterFn) {
 }
 
 /**
+ * Removes all falsy values (undefined, null, false, ...) from a list/array
+ * @param  {array} l the array to sanitize
+ * @return {array}   the sanitized array
+ */
+export function sanitizeList(l) {
+    let sanitizedList = [];
+
+    for(let i = 0; i < l.length; i++) {
+        if(l[i]) {
+            sanitizedList.push(l[i]);
+        }
+    }
+
+    return sanitizedList;
+}
+
+/**
  * Sums up a list of numbers. Like a Epsilon-math-kinda-sum...
  */
 export function sumNumList(l) {
@@ -177,4 +194,31 @@ function _mergeOptions(obj1, obj2) {
  */
 export function escapeHTML(s) {
     return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
+}
+
+export function excludePropFromObject(obj, propList){
+    let clonedObj = mergeOptions({}, obj);
+    for (let item in propList){
+        if (clonedObj[propList[item]]){
+            delete clonedObj[propList[item]];
+        }
+    }
+    return clonedObj;
+}
+
+/**
+ * Takes a string and breaks it at the supplied index and replaces it
+ * with a (potentially) short string that also has been provided
+ * @param  {string} text        The string to truncate
+ * @param  {number} charIndex   The char number at which the text should be truncated
+ * @param  {String} replacement All text after charIndex will be replaced with this string
+ * @return {string}             The truncated text
+ */
+export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
+    let truncatedText = '';
+
+    truncatedText = text.slice(0, charIndex);
+    truncatedText += text.length > charIndex ? replacement : '';
+
+    return truncatedText;
 }
