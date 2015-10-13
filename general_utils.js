@@ -222,3 +222,13 @@ export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
 
     return truncatedText;
 }
+
+/**
+ * @param index, int, the starting index of the substring to be replaced
+ * @param character, substring to be replaced
+ * @returns {string}
+ */
+export function replaceSubstringAtIndex(baseString, substrToReplace, stringToBePut) {
+    let index = baseString.indexOf(substrToReplace);
+    return baseString.substr(0, index) + stringToBePut + baseString.substr(index + substrToReplace.length);
+}
