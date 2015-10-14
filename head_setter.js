@@ -36,7 +36,3 @@ export function constructHead(headObject){
         }
     }
 }
-
-export function setTitle(titleString){
-    document.title = titleString;
-}
