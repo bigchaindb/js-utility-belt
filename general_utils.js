@@ -234,18 +234,3 @@ export function getSubdomain() {
     return tokens.length > 2 ? tokens[0] : 'www';
 }
 
-
-/**
- * Checks if the child DOM node is a descendant of the parent DOM node
- * @return {boolean}
- */
-export function isDescendantOfDOMNode(parent, child) {
-    let node = child.parentNode;
-        while (node != null) {
-        if (node === parent) {
-            return true;
-        }
-            node = node.parentNode;
-        }
-        return false;
-}
