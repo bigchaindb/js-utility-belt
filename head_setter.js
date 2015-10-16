@@ -14,8 +14,7 @@ function constructHeadElement(elementType, elementId, elementAttributes) {
             element.setAttribute(k, elementAttributes[k]);
         }
         catch(e){
-            console.log(e.message);
-            console.log(elementAttributes);
+            console.warn(e.message);
             continue;
         }
     }
