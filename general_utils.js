@@ -243,3 +243,13 @@ export function getSubdomain() {
     let tokens = host.split('.');
     return tokens.length > 2 ? tokens[0] : 'www';
 }
+
+/**
+ * Takes two lists and returns their intersection as a list
+ * @param  {Array} a
+ * @param  {Array} b
+ * @return {[Array]} Intersected list of a and b
+ */
+export function intersectLists(a, b) {
+    return a.filter((val) => b.indexOf(val) > -1);
+}
