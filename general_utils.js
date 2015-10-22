@@ -131,7 +131,8 @@ export function mergeOptions(...l) {
 }
 
 /**
- * Merges a number of objects even if there're having duplicates.
+ * Merges a number of objects even if there're having duplicates,
+ * taking the last given value for the key.
  *
  * DOES NOT RETURN AN ERROR!
  *
@@ -141,8 +142,6 @@ export function mergeOptions(...l) {
  * @return {[type]}   [description]
  */
 export function mergeOptionsWithDuplicates(...l) {
-    // If the objects submitted in the list have duplicates,in their key names,
-    // abort the merge and tell the function's user to check his objects.
     let newObj = {};
 
     for(let i = 1; i < l.length; i++) {
@@ -174,7 +173,7 @@ export function update(a, ...l) {
  */
 function _mergeOptions(obj1, obj2) {
     let obj3 = {};
-    
+
     for (let attrname in obj1) {
         obj3[attrname] = obj1[attrname];
     }
