@@ -6,9 +6,12 @@
  * tagged as false by the passed in filter function
  *
  * @param  {object} obj regular javascript object
+ * @param  {function} filterFn a filter function for filtering either by key or value
+ * @param  {bool} filterByKey a boolean for choosing whether the object should be filtered by
+ *                key or value
  * @return {object}     regular javascript object without null values or empty strings
  */
-export function sanitize(obj, filterFn) {
+export function sanitize(obj, filterFn, filterByKey) {
     if(!filterFn) {
         // By matching null with a double equal, we can match undefined and null
         // http://stackoverflow.com/a/15992131
@@ -18,7 +21,9 @@ export function sanitize(obj, filterFn) {
     Object
         .keys(obj)
         .map((key) => {
-            if(filterFn(obj[key])) {
+            const filterCondition = filterByKey ? filterFn(key) : filterFn(obj[key]);
+
+            if(filterCondition) {
                 delete obj[key];
             }
         });

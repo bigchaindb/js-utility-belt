@@ -51,11 +51,8 @@ function storageAvailable(type) {
 }
 
 /**
- * Function detects whether sessionStorage is both supported
+ * Const that detects whether sessionStorage is both supported
  * and available.
- * @return {bool} Is sessionStorage available on this browser
  */
-export function sessionStorageAvailable() {
-    return storageAvailable('sessionStorage');
-}
+export const sessionStorageAvailable = storageAvailable('sessionStorage');
 
