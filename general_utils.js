@@ -1,29 +1,23 @@
 'use strict';
 
+import _ from 'lodash';
+
 /**
- * Takes an object and deletes all keys that are
- *
- * tagged as false by the passed in filter function
+ * Takes an object and returns a shallow copy without any keys
+ * that fail the passed in filter function.
+ * Does not modify the passed in object.
  *
  * @param  {object} obj regular javascript object
  * @return {object}     regular javascript object without null values or empty strings
  */
 export function sanitize(obj, filterFn) {
-    if(!filterFn) {
+    if (!filterFn) {
         // By matching null with a double equal, we can match undefined and null
         // http://stackoverflow.com/a/15992131
         filterFn = (val) => val == null || val === '';
     }
 
-    Object
-        .keys(obj)
-        .map((key) => {
-            if(filterFn(obj[key])) {
-                delete obj[key];
-            }
-        });
-
-    return obj;
+    return _.omit(obj, filterFn);
 }
 
 /**
