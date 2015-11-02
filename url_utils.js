@@ -1,7 +1,7 @@
 'use strict'
 
 import camelCase from 'camelcase';
-import snakeCase from 'snake-case';
+import decamelize from 'decamelize';
 import qs from 'qs';
 
 import { sanitize } from './general_utils';
@@ -33,7 +33,7 @@ export function argsToQueryParams(obj) {
     Object
         .keys(sanitizedObj)
         .forEach((key) => {
-            queryParamObj[snakeCase(key)] = sanitizedObj[key];
+            queryParamObj[decamelize(key)] = sanitizedObj[key];
         });
 
     // Use bracket arrayFormat as history.js and react-router use it
