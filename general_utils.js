@@ -1,7 +1,5 @@
 'use strict';
 
-import _ from 'lodash';
-
 /**
  * Takes an object and returns a shallow copy without any keys
  * that fail the passed in filter function.
