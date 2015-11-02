@@ -15,7 +15,7 @@ export function sanitize(obj, filterFn) {
         filterFn = (val) => val == null || val === '';
     }
 
-    return _.omit(obj, filterFn);
+    return omitFromObject(obj, filterFn);
 }
 
 /**
