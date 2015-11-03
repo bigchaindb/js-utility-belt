@@ -195,14 +195,41 @@ export function escapeHTML(s) {
     return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
 }
 
-export function excludePropFromObject(obj, propList){
-    let clonedObj = mergeOptions({}, obj);
-    for (let item in propList){
-        if (clonedObj[propList[item]]){
-            delete clonedObj[propList[item]];
+/**
+ * Returns a copy of the given object's own and inherited enumerable
+ * properties, omitting any keys that pass the given filter function.
+ */
+function filterObjOnFn(obj, filterFn) {
+    const filteredObj = {};
+
+    for (let key in obj) {
+        const val = obj[key];
+        if (filterFn == null || !filterFn(val, key)) {
+            filteredObj[key] = val;
         }
     }
-    return clonedObj;
+
+    return filteredObj;
+}
+
+/**
+ * Similar to lodash's _.omit(), this returns a copy of the given object's
+ * own and inherited enumerable properties, omitting any keys that are
+ * in the given array or whose value pass the given filter function.
+ * @param  {object}         obj    Source object
+ * @param  {array|function} filter Array of key names to omit or function to invoke per iteration
+ * @return {object}                The new object
+*/
+export function omitFromObject(obj, filter) {
+    if (filter && filter.constructor === Array) {
+        return filterObjOnFn(obj, (_, key) => {
+            return filter.indexOf(key) >= 0;
+        });
+    } else if (filter && typeof filter === 'function') {
+        return filterObjOnFn(obj, filter);
+    } else {
+        throw new Error('The given filter is not an array or function. Exclude aborted');
+    }
 }
 
 /**
