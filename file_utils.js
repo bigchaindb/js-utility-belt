@@ -2,6 +2,7 @@
 
 import Q from 'q';
 import SparkMD5 from 'spark-md5';
+import Moment from 'moment';
 
 import { getLangText } from './lang_utils';
 
@@ -37,7 +38,7 @@ export function computeHashOfFile(file) {
         let spark = new SparkMD5.ArrayBuffer();
         let fileReader = new FileReader();
 
-        let startTime = new Date();
+        let startTime = new Moment();
 
         // comment: We should convert this to es6 at some point, however if so please consider that
         // an arrow function will get rid of the function's scope...
@@ -53,7 +54,7 @@ export function computeHashOfFile(file) {
 
                 console.info('computed hash %s (took %d s)',
                     fileHash,
-                    Math.round(((new Date() - startTime) / 1000) % 60)); // Compute hash
+                    Math.round(((new Moment() - startTime) / 1000) % 60)); // Compute hash
 
                 let blobTextFile = makeTextFile(fileHash, file);
                 resolve(blobTextFile);
