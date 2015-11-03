@@ -1,29 +1,21 @@
 'use strict';
 
 /**
- * Takes an object and deletes all keys that are
- *
- * tagged as false by the passed in filter function
+ * Takes an object and returns a shallow copy without any keys
+ * that fail the passed in filter function.
+ * Does not modify the passed in object.
  *
  * @param  {object} obj regular javascript object
  * @return {object}     regular javascript object without null values or empty strings
  */
 export function sanitize(obj, filterFn) {
-    if(!filterFn) {
+    if (!filterFn) {
         // By matching null with a double equal, we can match undefined and null
         // http://stackoverflow.com/a/15992131
         filterFn = (val) => val == null || val === '';
     }
 
-    Object
-        .keys(obj)
-        .map((key) => {
-            if(filterFn(obj[key])) {
-                delete obj[key];
-            }
-        });
-
-    return obj;
+    return omitFromObject(obj, filterFn);
 }
 
 /**
@@ -82,8 +74,8 @@ export function formatText() {
     });
 }
 
-/*
-    Checks a list of objects for key duplicates and returns a boolean
+/**
+ * Checks a list of objects for key duplicates and returns a boolean
  */
 function _doesObjectListHaveDuplicates(l) {
     let mergedList = [];
@@ -117,38 +109,11 @@ function _doesObjectListHaveDuplicates(l) {
 export function mergeOptions(...l) {
     // If the objects submitted in the list have duplicates,in their key names,
     // abort the merge and tell the function's user to check his objects.
-    if(_doesObjectListHaveDuplicates(l)) {
+    if (_doesObjectListHaveDuplicates(l)) {
         throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
     }
 
-    let newObj = {};
-
-    for(let i = 1; i < l.length; i++) {
-        newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
-    }
-
-    return newObj;
-}
-
-/**
- * Merges a number of objects even if there're having duplicates,
- * taking the last given value for the key.
- *
- * DOES NOT RETURN AN ERROR!
- *
- * Takes a list of object and merges their keys to one object.
- * Uses mergeOptions for two objects.
- * @param  {[type]} l [description]
- * @return {[type]}   [description]
- */
-export function mergeOptionsWithDuplicates(...l) {
-    let newObj = {};
-
-    for(let i = 1; i < l.length; i++) {
-        newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
-    }
-
-    return newObj;
+    return Object.assign({}, ...l);
 }
 
 /**
@@ -162,25 +127,6 @@ export function update(a, ...l) {
     }
 
     return a;
-}
-
-/**
- * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
- * @param obj1
- * @param obj2
- * @returns obj3 a new object based on obj1 and obj2
- * Taken from: http://stackoverflow.com/a/171256/1263876
- */
-function _mergeOptions(obj1, obj2) {
-    let obj3 = {};
-
-    for (let attrname in obj1) {
-        obj3[attrname] = obj1[attrname];
-    }
-    for (let attrname in obj2) {
-        obj3[attrname] = obj2[attrname];
-    }
-    return obj3;
 }
 
 /**
