@@ -223,6 +223,16 @@ export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
 }
 
 /**
+ * @param index, int, the starting index of the substring to be replaced
+ * @param character, substring to be replaced
+ * @returns {string}
+ */
+export function replaceSubstringAtIndex(baseString, substrToReplace, stringToBePut) {
+    let index = baseString.indexOf(substrToReplace);
+    return baseString.substr(0, index) + stringToBePut + baseString.substr(index + substrToReplace.length);
+}
+
+/**
  * Extracts the user's subdomain from the browser's window.
  * If no subdomain is found (for example on a naked domain), the default "www" is just assumed.
  * @return {string} subdomain as a string
@@ -231,4 +241,14 @@ export function getSubdomain() {
     let { host } = window.location;
     let tokens = host.split('.');
     return tokens.length > 2 ? tokens[0] : 'www';
+}
+
+/**
+ * Takes two lists and returns their intersection as a list
+ * @param  {Array} a
+ * @param  {Array} b
+ * @return {[Array]} Intersected list of a and b
+ */
+export function intersectLists(a, b) {
+    return a.filter((val) => b.indexOf(val) > -1);
 }
