@@ -1,6 +1,7 @@
 'use strict';
 
 import Q from 'q';
+import moment from 'moment';
 
 import { sanitize } from './general_utils';
 import AppConstants from '../constants/application_constants';
@@ -70,10 +71,18 @@ export function getCookie(name) {
     let parts = document.cookie.split(';');
     
     for(let i = 0; i < parts.length; i++) {
-        if(parts[i].indexOf(AppConstants.csrftoken + '=') > -1) {
+        if(parts[i].indexOf(name + '=') > -1) {
             return parts[i].split('=').pop();
         }
     }
+}
+
+export function setCookie(key, value, days) {
+    const exdate = moment();
+    exdate.add(days, 'days');
+    console.log(exdate.utc());
+    value = window.escape(value) + ((days === null) ? '' : `; expires= ${exdate.utc()}`);
+    document.cookie = `${key}=${value}`;
 }
 
 /*
