@@ -80,7 +80,6 @@ export function getCookie(name) {
 export function setCookie(key, value, days) {
     const exdate = moment();
     exdate.add(days, 'days');
-    console.log(exdate.utc());
     value = window.escape(value) + ((days === null) ? '' : `; expires= ${exdate.utc()}`);
     document.cookie = `${key}=${value}`;
 }
