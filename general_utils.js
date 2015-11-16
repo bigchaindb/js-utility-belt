@@ -1,29 +1,21 @@
 'use strict';
 
 /**
- * Takes an object and deletes all keys that are
- *
- * tagged as false by the passed in filter function
+ * Takes an object and returns a shallow copy without any keys
+ * that fail the passed in filter function.
+ * Does not modify the passed in object.
  *
  * @param  {object} obj regular javascript object
  * @return {object}     regular javascript object without null values or empty strings
  */
 export function sanitize(obj, filterFn) {
-    if(!filterFn) {
+    if (!filterFn) {
         // By matching null with a double equal, we can match undefined and null
         // http://stackoverflow.com/a/15992131
         filterFn = (val) => val == null || val === '';
     }
 
-    Object
-        .keys(obj)
-        .map((key) => {
-            if(filterFn(obj[key])) {
-                delete obj[key];
-            }
-        });
-
-    return obj;
+    return omitFromObject(obj, filterFn);
 }
 
 /**
@@ -82,8 +74,8 @@ export function formatText() {
     });
 }
 
-/*
-    Checks a list of objects for key duplicates and returns a boolean
+/**
+ * Checks a list of objects for key duplicates and returns a boolean
  */
 function _doesObjectListHaveDuplicates(l) {
     let mergedList = [];
@@ -121,35 +113,7 @@ export function mergeOptions(...l) {
         throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
     }
 
-    let newObj = {};
-
-    for(let i = 1; i < l.length; i++) {
-        newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
-    }
-
-    return newObj;
-}
-
-/**
- * Merges a number of objects even if there're having duplicates.
- *
- * DOES NOT RETURN AN ERROR!
- *
- * Takes a list of object and merges their keys to one object.
- * Uses mergeOptions for two objects.
- * @param  {[type]} l [description]
- * @return {[type]}   [description]
- */
-export function mergeOptionsWithDuplicates(...l) {
-    // If the objects submitted in the list have duplicates,in their key names,
-    // abort the merge and tell the function's user to check his objects.
-    let newObj = {};
-
-    for(let i = 1; i < l.length; i++) {
-        newObj = _mergeOptions(newObj, _mergeOptions(l[i - 1], l[i]));
-    }
-
-    return newObj;
+    return Object.assign({}, ...l);
 }
 
 /**
@@ -166,25 +130,6 @@ export function update(a, ...l) {
 }
 
 /**
- * Overwrites obj1's values with obj2's and adds obj2's if non existent in obj1
- * @param obj1
- * @param obj2
- * @returns obj3 a new object based on obj1 and obj2
- * Taken from: http://stackoverflow.com/a/171256/1263876
- */
-function _mergeOptions(obj1, obj2) {
-    let obj3 = {};
-    
-    for (let attrname in obj1) {
-        obj3[attrname] = obj1[attrname];
-    }
-    for (let attrname in obj2) {
-        obj3[attrname] = obj2[attrname];
-    }
-    return obj3;
-}
-
-/**
  * Escape HTML in a string so it can be injected safely using
  * React's `dangerouslySetInnerHTML`
  *
@@ -196,14 +141,41 @@ export function escapeHTML(s) {
     return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
 }
 
-export function excludePropFromObject(obj, propList){
-    let clonedObj = mergeOptions({}, obj);
-    for (let item in propList){
-        if (clonedObj[propList[item]]){
-            delete clonedObj[propList[item]];
+/**
+ * Returns a copy of the given object's own and inherited enumerable
+ * properties, omitting any keys that pass the given filter function.
+ */
+function filterObjOnFn(obj, filterFn) {
+    const filteredObj = {};
+
+    for (let key in obj) {
+        const val = obj[key];
+        if (filterFn == null || !filterFn(val, key)) {
+            filteredObj[key] = val;
         }
     }
-    return clonedObj;
+
+    return filteredObj;
+}
+
+/**
+ * Similar to lodash's _.omit(), this returns a copy of the given object's
+ * own and inherited enumerable properties, omitting any keys that are
+ * in the given array or whose value pass the given filter function.
+ * @param  {object}         obj    Source object
+ * @param  {array|function} filter Array of key names to omit or function to invoke per iteration
+ * @return {object}                The new object
+*/
+export function omitFromObject(obj, filter) {
+    if (filter && filter.constructor === Array) {
+        return filterObjOnFn(obj, (_, key) => {
+            return filter.indexOf(key) >= 0;
+        });
+    } else if (filter && typeof filter === 'function') {
+        return filterObjOnFn(obj, filter);
+    } else {
+        throw new Error('The given filter is not an array or function. Exclude aborted');
+    }
 }
 
 /**
