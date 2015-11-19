@@ -85,3 +85,15 @@ export function computeHashOfFile(file) {
         loadNext();
     });
 }
+
+/**
+ * Extracts a file extension from a string, by splitting by dot and taking
+ * the last substring
+ * @param  {string} s file's name + extension
+ * @return {string}   file extension
+ *
+ * Via: http://stackoverflow.com/a/190878/1263876
+ */
+export function extractFileExtensionFromString(s) {
+    return s.split('.').pop();
+}
