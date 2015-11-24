@@ -1,6 +1,12 @@
 'use strict';
 
 /**
+ * Checks shallow equality
+ * Re-export of shallow from shallow-equals
+ */
+export { default as isShallowEqual } from 'shallow-equals';
+
+/**
  * Takes an object and returns a shallow copy without any keys
  * that fail the passed in filter function.
  * Does not modify the passed in object.
