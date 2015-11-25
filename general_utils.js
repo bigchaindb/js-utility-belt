@@ -213,9 +213,12 @@ export function deepMatchObject(obj, match, testFn) {
                 const objProp = obj[matchKey];
                 const matchProp = match[matchKey];
 
-                return (typeof matchProp === 'object') ? testObjAgainstMatch(objProp, matchProp, testFn)
-                                                       : testFn(objProp, matchProp);
-
+                if (typeof matchProp === 'object') {
+                    return (typeof objProp === 'object') ? deepMatchObject(objProp, matchProp, testFn)
+                                                         : false;
+                } else {
+                    return testFn(objProp, matchProp);
+                }
             }, true);
 }
 
