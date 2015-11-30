@@ -22,15 +22,15 @@ export function getLangText(s, ...args) {
     let lang = getLang();
     try {
         if(lang in languages) {
-            return formatText(languages[lang][s], args);
+            return formatText(languages[lang][s], ...args);
         } else {
             // just use the english language
-            return formatText(languages['en-US'][s], args);
+            return formatText(languages['en-US'][s], ...args);
         }
     } catch(err) {
         //if(!(s in languages[lang])) {
         //console.warn('Language-string is not in constants file. Add: "' + s + '" to the "' + lang + '" language file. Defaulting to keyname');
-        return formatText(s, args);
+        return formatText(s, ...args);
         //} else {
         //    console.error(err);
         //}
