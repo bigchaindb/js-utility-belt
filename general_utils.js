@@ -1,6 +1,12 @@
 'use strict';
 
 /**
+ * Checks shallow equality
+ * Re-export of shallow from shallow-equals
+ */
+export { default as isShallowEqual } from 'shallow-equals';
+
+/**
  * Takes an object and returns a shallow copy without any keys
  * that fail the passed in filter function.
  * Does not modify the passed in object.
@@ -109,7 +115,7 @@ function _doesObjectListHaveDuplicates(l) {
 export function mergeOptions(...l) {
     // If the objects submitted in the list have duplicates,in their key names,
     // abort the merge and tell the function's user to check his objects.
-    if(_doesObjectListHaveDuplicates(l)) {
+    if (_doesObjectListHaveDuplicates(l)) {
         throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
     }
 
