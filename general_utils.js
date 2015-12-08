@@ -145,7 +145,7 @@ export function escapeHTML(s) {
  * Returns a copy of the given object's own and inherited enumerable
  * properties, omitting any keys that pass the given filter function.
  */
-function filterObjOnFn(obj, filterFn) {
+function applyFilterOnObject(obj, filterFn) {
     const filteredObj = {};
 
     for (let key in obj) {
@@ -159,6 +159,37 @@ function filterObjOnFn(obj, filterFn) {
 }
 
 /**
+ * Abstraction for selectFromObject and omitFromObject
+ * for DRYness
+ * @param {boolean} isInclusion True if the filter should be for including the filtered items
+ *                              (ie. selecting only them vs omitting only them)
+ */
+function filterFromObject(obj, filter, { isInclusion = true } = {}) {
+    if (filter && filter.constructor === Array) {
+        return applyFilterOnObject(obj, isInclusion ? ((_, key) => filter.indexOf(key) < 0)
+                                                    : ((_, key) => filter.indexOf(key) >= 0));
+    } else if (filter && typeof filter === 'function') {
+        // Flip the filter fn's return if it's for inclusion
+        return applyFilterOnObject(obj, isInclusion ? (...args) => !filter(...args)
+                                                    : filter);
+    } else {
+        throw new Error('The given filter is not an array or function. Exclude aborted');
+    }
+}
+
+/**
+ * Similar to lodash's _.pick(), this returns a copy of the given object's
+ * own and inherited enumerable properties, selecting only the keys in
+ * the given array or whose value pass the given filter function.
+ * @param  {object}         obj    Source object
+ * @param  {array|function} filter Array of key names to select or function to invoke per iteration
+ * @return {object}                The new object
+*/
+export function selectFromObject(obj, filter) {
+    return filterFromObject(obj, filter);
+}
+
+/**
  * Similar to lodash's _.omit(), this returns a copy of the given object's
  * own and inherited enumerable properties, omitting any keys that are
  * in the given array or whose value pass the given filter function.
@@ -167,15 +198,7 @@ function filterObjOnFn(obj, filterFn) {
  * @return {object}                The new object
 */
 export function omitFromObject(obj, filter) {
-    if (filter && filter.constructor === Array) {
-        return filterObjOnFn(obj, (_, key) => {
-            return filter.indexOf(key) >= 0;
-        });
-    } else if (filter && typeof filter === 'function') {
-        return filterObjOnFn(obj, filter);
-    } else {
-        throw new Error('The given filter is not an array or function. Exclude aborted');
-    }
+    return filterFromObject(obj, filter, { isInclusion: false });
 }
 
 /**
