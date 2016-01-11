@@ -84,6 +84,8 @@ export function formatText() {
  * Checks a list of objects for key duplicates and returns a boolean
  */
 function _doesObjectListHaveDuplicates(l) {
+    let mergedList = [];
+
     l = l.map((obj) => {
         if(!obj) {
             throw new Error('The object you are trying to merge is null instead of an empty object');
@@ -92,11 +94,11 @@ function _doesObjectListHaveDuplicates(l) {
         return Object.keys(obj);
     });
 
-    // Taken from: http://stackoverflow.com/a/10865042 (but even better with rest)
+    // Taken from: http://stackoverflow.com/a/10865042
     // How to flatten an array of arrays in javascript.
     // If two objects contain the same key, then these two keys
     // will actually be represented in the merged array
-    let mergedList = [].concat(...l);
+    mergedList = mergedList.concat.apply(mergedList, l);
 
     // Taken from: http://stackoverflow.com/a/7376645/1263876
     // By casting the array to a set, and then checking if the size of the array
@@ -149,7 +151,7 @@ export function escapeHTML(s) {
  * Returns a copy of the given object's own and inherited enumerable
  * properties, omitting any keys that pass the given filter function.
  */
-function filterObjOnFn(obj, filterFn) {
+function applyFilterOnObject(obj, filterFn) {
     const filteredObj = {};
 
     for (let key in obj) {
@@ -163,6 +165,37 @@ function filterObjOnFn(obj, filterFn) {
 }
 
 /**
+ * Abstraction for selectFromObject and omitFromObject
+ * for DRYness
+ * @param {boolean} isInclusion True if the filter should be for including the filtered items
+ *                              (ie. selecting only them vs omitting only them)
+ */
+function filterFromObject(obj, filter, { isInclusion = true } = {}) {
+    if (filter && filter.constructor === Array) {
+        return applyFilterOnObject(obj, isInclusion ? ((_, key) => filter.indexOf(key) < 0)
+                                                    : ((_, key) => filter.indexOf(key) >= 0));
+    } else if (filter && typeof filter === 'function') {
+        // Flip the filter fn's return if it's for inclusion
+        return applyFilterOnObject(obj, isInclusion ? (...args) => !filter(...args)
+                                                    : filter);
+    } else {
+        throw new Error('The given filter is not an array or function. Exclude aborted');
+    }
+}
+
+/**
+ * Similar to lodash's _.pick(), this returns a copy of the given object's
+ * own and inherited enumerable properties, selecting only the keys in
+ * the given array or whose value pass the given filter function.
+ * @param  {object}         obj    Source object
+ * @param  {array|function} filter Array of key names to select or function to invoke per iteration
+ * @return {object}                The new object
+*/
+export function selectFromObject(obj, filter) {
+    return filterFromObject(obj, filter);
+}
+
+/**
  * Similar to lodash's _.omit(), this returns a copy of the given object's
  * own and inherited enumerable properties, omitting any keys that are
  * in the given array or whose value pass the given filter function.
@@ -171,15 +204,51 @@ function filterObjOnFn(obj, filterFn) {
  * @return {object}                The new object
 */
 export function omitFromObject(obj, filter) {
-    if (filter && filter.constructor === Array) {
-        return filterObjOnFn(obj, (_, key) => {
-            return filter.indexOf(key) >= 0;
-        });
-    } else if (filter && typeof filter === 'function') {
-        return filterObjOnFn(obj, filter);
-    } else {
-        throw new Error('The given filter is not an array or function. Exclude aborted');
+    return filterFromObject(obj, filter, { isInclusion: false });
+}
+
+/**
+ * Recursively tests an object against a "match" object to see if the
+ * object is similar to the "match" object. In other words, this will
+ * deeply traverse the "match" object's properties and check them
+ * against the object by using the testFn.
+ *
+ * The object is considered a match if all primitive properties in the
+ * "match" object are found and accepted in the object by the testFn.
+ *
+ * @param  {object}     obj    Object to test
+ * @param  {object}     match  "Match" object to test against
+ * @param  {(function)} testFn Function to use on each property test.
+ *                             Return true to accept the match.
+ *                             By default, applies strict equality using ===
+ * @return {boolean}           True if obj matches the "match" object
+ */
+export function deepMatchObject(obj, match, testFn) {
+    if (typeof match !== 'object') {
+        throw new Error('Your specified match argument was not an object');
     }
+
+    if (typeof testFn !== 'function') {
+        testFn = (objProp, matchProp) => {
+            return objProp === matchProp;
+        };
+    }
+
+    return Object
+            .keys(match)
+            .reduce((result, matchKey) => {
+                if (!result) { return false; }
+
+                const objProp = obj[matchKey];
+                const matchProp = match[matchKey];
+
+                if (typeof matchProp === 'object') {
+                    return (typeof objProp === 'object') ? deepMatchObject(objProp, matchProp, testFn)
+                                                         : false;
+                } else {
+                    return testFn(objProp, matchProp);
+                }
+            }, true);
 }
 
 /**
