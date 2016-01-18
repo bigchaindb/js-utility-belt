@@ -103,7 +103,7 @@ function _doesObjectListHaveDuplicates(l) {
     // Taken from: http://stackoverflow.com/a/7376645/1263876
     // By casting the array to a set, and then checking if the size of the array
     // shrunk in the process of casting, we can check if there were any duplicates
-    return (new Set(mergedList)).size !== mergedList.length;
+    return new Set(mergedList).size !== mergedList.length;
 }
 
 /**
