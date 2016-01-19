@@ -2,7 +2,7 @@
 
 import camelCase from 'camelcase';
 import decamelize from 'decamelize';
-import qs from 'qs';
+import queryString from 'query-string';
 
 import { sanitize } from './general_utils';
 
@@ -36,8 +36,7 @@ export function argsToQueryParams(obj) {
             queryParamObj[decamelize(key)] = sanitizedObj[key];
         });
 
-    // Use bracket arrayFormat as history.js and react-router use it
-    return '?' + qs.stringify(queryParamObj, { arrayFormat: 'brackets' });
+    return '?' + queryString.stringify(queryParamObj);
 }
 
 /**
@@ -56,13 +55,13 @@ export function getCurrentQueryParams() {
  * @return {object}                  Query params dictionary
  */
 export function queryParamsToArgs(queryParamString) {
-    const qsQueryParamObj = qs.parse(queryParamString);
+    const queryParamObj = queryString.parse(queryParamString);
     const camelCaseParamObj = {};
 
     Object
-        .keys(qsQueryParamObj)
+        .keys(queryParamObj)
         .forEach((key) => {
-            camelCaseParamObj[camelCase(key)] = qsQueryParamObj[key];
+            camelCaseParamObj[camelCase(key)] = queryParamObj[key];
         });
 
     return camelCaseParamObj;
