@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import camelCase from 'camelcase';
 import decamelize from 'decamelize';
