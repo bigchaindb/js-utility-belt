@@ -78,7 +78,7 @@ export function computeHashOfFile(file) {
                 progress: start / file.size,
                 reject
             });
-            
+
             fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
         }
 
