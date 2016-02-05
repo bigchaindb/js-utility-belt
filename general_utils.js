@@ -223,15 +223,12 @@ export function omitFromObject(obj, filter) {
  *                             By default, applies strict equality using ===
  * @return {boolean}           True if obj matches the "match" object
  */
-export function deepMatchObject(obj, match, testFn) {
+export function deepMatchObject(obj, match, testFn = (objProp, matchProp) => objProp === matchProp) {
     if (typeof match !== 'object') {
         throw new Error('Your specified match argument was not an object');
     }
-
     if (typeof testFn !== 'function') {
-        testFn = (objProp, matchProp) => {
-            return objProp === matchProp;
-        };
+        throw new Error('Your specified test function was not a function');
     }
 
     return Object
@@ -239,7 +236,7 @@ export function deepMatchObject(obj, match, testFn) {
             .reduce((result, matchKey) => {
                 if (!result) { return false; }
 
-                const objProp = obj[matchKey];
+                const objProp = obj && obj[matchKey];
                 const matchProp = match[matchKey];
 
                 if (typeof matchProp === 'object') {
