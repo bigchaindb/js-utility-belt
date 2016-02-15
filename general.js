@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Checks shallow equality
  * Re-export of shallow from shallow-equals
@@ -39,15 +37,6 @@ export function sanitizeList(l) {
     }
 
     return sanitizedList;
-}
-
-/**
- * Sums up a list of numbers. Like a Epsilon-math-kinda-sum...
- */
-export function sumNumList(l) {
-    let sum = 0;
-    l.forEach((num) => sum += parseFloat(num) || 0);
-    return sum;
 }
 
 /*
@@ -120,31 +109,6 @@ export function mergeOptions(...l) {
     }
 
     return Object.assign({}, ...l);
-}
-
-/**
- * In place update of a dictionary
- */
-export function update(a, ...l) {
-    for(let i = 0; i < l.length; i++) {
-        for (let attrname in l[i]) {
-            a[attrname] = l[i][attrname];
-        }
-    }
-
-    return a;
-}
-
-/**
- * Escape HTML in a string so it can be injected safely using
- * React's `dangerouslySetInnerHTML`
- *
- * @param s the string to be sanitized
- *
- * Taken from: http://stackoverflow.com/a/17546215/597097
- */
-export function escapeHTML(s) {
-    return document.createElement('div').appendChild(document.createTextNode(s)).parentNode.innerHTML;
 }
 
 /**
@@ -252,46 +216,21 @@ export function deepMatchObject(obj, match, testFn = (objProp, matchProp) => obj
  * Takes a string and breaks it at the supplied index and replaces it
  * with a (potentially) short string that also has been provided
  * @param  {string} text        The string to truncate
- * @param  {number} charIndex   The char number at which the text should be truncated
- * @param  {String} replacement All text after charIndex will be replaced with this string
+ * @param  {number} truncIndex  The char number at which the text should be truncated
+ * @param  {String} replacement All text after truncIndex will be replaced with this string.
+ *                              This string will only be used if there is still text after truncIndex.
  * @return {string}             The truncated text
  */
-export function truncateTextAtCharIndex(text, charIndex, replacement = '...') {
-    let truncatedText = '';
-
-    truncatedText = text.slice(0, charIndex);
-    truncatedText += text.length > charIndex ? replacement : '';
-
-    return truncatedText;
-}
-
-/**
- * @param index, int, the starting index of the substring to be replaced
- * @param character, substring to be replaced
- * @returns {string}
- */
-export function replaceSubstringAtIndex(baseString, substrToReplace, stringToBePut) {
-    let index = baseString.indexOf(substrToReplace);
-    return baseString.substr(0, index) + stringToBePut + baseString.substr(index + substrToReplace.length);
-}
-
-/**
- * Extracts the user's subdomain from the browser's window.
- * If no subdomain is found (for example on a naked domain), the default "www" is just assumed.
- * @return {string} subdomain as a string
- */
-export function getSubdomain() {
-    let { host } = window.location;
-    let tokens = host.split('.');
-    return tokens.length > 2 ? tokens[0] : 'www';
+export function truncateTextAtCharIndex(text, truncIndex, replacement = '...') {
+    return text.length > truncIndex ? (text.slice(0, truncIndex) + replacement) : text;
 }
 
 /**
  * Takes two lists and returns their intersection as a list
  * @param  {Array} a
  * @param  {Array} b
- * @return {[Array]} Intersected list of a and b
+ * @return {Array} Intersected list of a and b
  */
 export function intersectLists(a, b) {
-    return a.filter((val) => b.indexOf(val) > -1);
+    return a.filter((val) => b.includes(val));
 }
