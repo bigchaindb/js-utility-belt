@@ -5,6 +5,24 @@
 export { default as isShallowEqual } from 'shallow-equals';
 
 /**
+ * Noop function that can be stuffed into required callback props
+ */
+export function noop() {}
+
+/**
+ * Safely invoke a given function with the given args by first checking if `fn` is actually a
+ * function before invoking it.
+ *
+ * @param {function} fn  Function to invoke
+ * @param {any}      ... Arguments to be passed into `fn`
+ */
+export function safeInvoke(fn, ...args) {
+    if (typeof fn === 'function') {
+        fn(...args)
+    }
+}
+
+/**
  * Takes an object and returns a shallow copy without any keys
  * that fail the passed in filter function.
  * Does not modify the passed in object.
