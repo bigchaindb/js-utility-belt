@@ -24,35 +24,113 @@ export function arrayFrom(arrayLike) {
  */
 export function noop() {}
 
-function safeInvokeForConfig({ fn, params, error }) {
-    if (typeof fn === 'function') {
-        if (typeof params === 'function') {
-            params = params();
-        } else if (params === undefined) {
-            params = [];
-        }
-
-        // Make sure params is still an array even after any lazy computation
-        if (!Array.isArray(params)) {
-            console.warn("Params to pass to safeInvoke's fn is not an array. Ignoring...", params);
-            params = [];
-        }
-
-        return {
-            invoked: true,
-            result: fn(...params)
-        };
-    } else {
-        if (error) {
-            if (error instanceof Error) {
-                throw error;
-            } else {
-                console.warn('Error given to safeInvoke was not a JS Error. Ignoring...', error);
-            }
-        }
-
-        return { invoked: false };
+/**
+ * Recursively tests an object against a "match" object to see if the
+ * object is similar to the "match" object. In other words, this will
+ * deeply traverse the "match" object's properties and check them
+ * against the object by using the testFn.
+ *
+ * The object is considered a match if all primitive properties in the
+ * "match" object are found and accepted in the object by the testFn.
+ *
+ * @param  {object}     obj    Object to test
+ * @param  {object}     match  "Match" object to test against
+ * @param  {(function)} testFn Function to use on each property test.
+ *                             Return true to accept the match.
+ *                             By default, applies strict equality using ===
+ * @return {boolean}           True if obj matches the "match" object
+ */
+export function deepMatchObject(obj, match, testFn = (objProp, matchProp) => objProp === matchProp) {
+    if (typeof match !== 'object') {
+        throw new Error('Your specified match argument was not an object');
     }
+    if (typeof testFn !== 'function') {
+        throw new Error('Your specified test function was not a function');
+    }
+
+    return Object
+            .keys(match)
+            .reduce((result, matchKey) => {
+                if (!result) { return false; }
+
+                const objProp = obj && obj[matchKey];
+                const matchProp = match[matchKey];
+
+                if (typeof matchProp === 'object') {
+                    return (typeof objProp === 'object') ? deepMatchObject(objProp, matchProp, testFn)
+                                                         : false;
+                } else {
+                    return testFn(objProp, matchProp);
+                }
+            }, true);
+}
+
+/**
+ * Taken from http://stackoverflow.com/a/4795914/1263876
+ * Behaves like C's format string function
+ */
+export function formatText() {
+    let args = arguments,
+    string = args[0],
+    i = 1;
+    return string.replace(/%((%)|s|d)/g, (m) => {
+        // m is the matched format, e.g. %s, %d
+        let val = null;
+        if (m[2]) {
+            val = m[2];
+        } else {
+            val = args[i];
+            // A switch statement so that the formatter can be extended. Default is %s
+            switch (m) {
+                case '%d':
+                    val = parseFloat(val);
+                    if (isNaN(val)) {
+                        val = 0;
+                    }
+                    break;
+            }
+            i++;
+        }
+        return val;
+    });
+}
+
+/**
+ * Takes two lists and returns their intersection as a list
+ * @param  {Array} a
+ * @param  {Array} b
+ * @return {Array} Intersected list of a and b
+ */
+export function intersectLists(a, b) {
+    return a.filter((val) => b.includes(val));
+}
+
+/**
+ * Takes a list of object and merges their keys to one object.
+ * Uses mergeOptions for two objects.
+ * @param  {[type]} l [description]
+ * @return {[type]}   [description]
+ */
+export function mergeOptions(...l) {
+    // If the objects submitted in the list have duplicates,in their key names,
+    // abort the merge and tell the function's user to check his objects.
+    if (_doesObjectListHaveDuplicates(l)) {
+        throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
+    }
+
+    return Object.assign({}, ...l);
+}
+
+/**
+ * Similar to lodash's _.omit(), this returns a copy of the given object's
+ * own and inherited enumerable properties, omitting any keys that are
+ * in the given array or whose value pass the given filter function.
+ * @param  {object}         obj    Source object
+ * @param  {array|function} filter Array of key names to omit or function to invoke per iteration
+ * @return {object}                The new object
+*/
+export function omitFromObject(obj, filter) {
+    return filterFromObject(obj, filter, { isInclusion: false });
 }
 
 /**
@@ -331,5 +409,36 @@ function filterFromObject(obj, filter, { isInclusion = true } = {}) {
                                                     : (...args) => !filter(...args));
     } else {
         throw new Error('The given filter is not an array or function. Exclude aborted');
+    }
+}
+
+function safeInvokeForConfig({ fn, params, error }) {
+    if (typeof fn === 'function') {
+        if (typeof params === 'function') {
+            params = params();
+        } else if (params === undefined) {
+            params = [];
+        }
+
+        // Make sure params is still an array even after any lazy computation
+        if (!Array.isArray(params)) {
+            console.warn("Params to pass to safeInvoke's fn is not an array. Ignoring...", params);
+            params = [];
+        }
+
+        return {
+            invoked: true,
+            result: fn(...params)
+        };
+    } else {
+        if (error) {
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                console.warn('Error given to safeInvoke was not a JS Error. Ignoring...', error);
+            }
+        }
+
+        return { invoked: false };
     }
 }
