@@ -24,6 +24,37 @@ export function arrayFrom(arrayLike) {
  */
 export function noop() {}
 
+function safeInvokeForConfig({ fn, params, error }) {
+    if (typeof fn === 'function') {
+        if (typeof params === 'function') {
+            params = params();
+        } else if (params === undefined) {
+            params = [];
+        }
+
+        // Make sure params is still an array even after any lazy computation
+        if (!Array.isArray(params)) {
+            console.warn("Params to pass to safeInvoke's fn is not an array. Ignoring...", params);
+            params = [];
+        }
+
+        return {
+            invoked: true,
+            result: fn(...params)
+        };
+    } else {
+        if (error) {
+            if (error instanceof Error) {
+                throw error;
+            } else {
+                console.warn('Error given to safeInvoke was not a JS Error. Ignoring...', error);
+            }
+        }
+
+        return { invoked: false };
+    }
+}
+
 /**
  * Recursively tests an object against a "match" object to see if the
  * object is similar to the "match" object. In other words, this will
@@ -137,13 +168,43 @@ export function omitFromObject(obj, filter) {
  * Safely invoke a given function with the given args by first checking if `fn` is actually a
  * function before invoking it.
  *
- * @param {function} fn  Function to invoke
- * @param {any}      ... Arguments to be passed into `fn`
+ * Has two call signatures:
+ *   1. safeInvoke({
+ *          fn: function,
+ *          params: array of params or function for lazily computing parameters,
+ *          error: Error to throw if function not invoked
+ *      });
+ *   2. safeInvoke(fn, param1, param2, param3, ...);
+ *
+ * The second signature is a simplified one for general usage where you just want to execute a
+ * function if it exists with the given params.
+ *
+ * @param  {object}         options
+ * @param  {any}            options.fn     Function to invoke
+ * @param  {array|function} options.params Arguments to be passed into the function.
+ *                                         If this is a function, the resulting array of the function
+ *                                         will be passed as params into the function.
+ * @param  {Error}          options.error  Error to be thrown if the function is not invoked.
+ * @return {object}                        Return object specifying:
+ *                                           result - the result of the function (if invoked)
+ *                                           invoked - whether or not the function was invoked
  */
-export function safeInvoke(fn, ...args) {
-    if (typeof fn === 'function') {
-        fn(...args)
+export function safeInvoke(fnOrConfig, ...paramsForFn) {
+    let config;
+
+    if (fnOrConfig && fnOrConfig.hasOwnProperty('fn')) {
+        // First param is a config object (first call signature)
+        config = fnOrConfig;
+    } else {
+        // First param was not a config object, so we assume it's the second call signature and
+        // turn it into a config object
+        config = {
+            fn: fnOrConfig,
+            params: paramsForFn
+        };
     }
+
+    return safeInvokeForConfig(config);
 }
 
 /**
