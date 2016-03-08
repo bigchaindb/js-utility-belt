@@ -296,14 +296,14 @@ function _doesObjectListHaveDuplicates(l) {
 
 /**
  * Returns a copy of the given object's own and inherited enumerable
- * properties, omitting any keys that pass the given filter function.
+ * properties, keeping any keys that pass the given filter function.
  */
 function applyFilterOnObject(obj, filterFn) {
     const filteredObj = {};
 
     for (let key in obj) {
         const val = obj[key];
-        if (filterFn == null || !filterFn(val, key)) {
+        if (filterFn == null || filterFn(val, key)) {
             filteredObj[key] = val;
         }
     }
@@ -312,19 +312,23 @@ function applyFilterOnObject(obj, filterFn) {
 }
 
 /**
- * Abstraction for selectFromObject and omitFromObject
- * for DRYness
- * @param {boolean} isInclusion True if the filter should be for including the filtered items
- *                              (ie. selecting only them vs omitting only them)
+ * Abstraction for selectFromObject and omitFromObject for DRYness
+ *
+ * @param {object}         obj
+ * @param {array|function} filter
+ * @param {object}         options
+ * @param {boolean}        options.isInclusion True if the filter should be for including the
+ *                                             filtered items (ie. selecting only them vs omitting
+ *                                             only them)
  */
 function filterFromObject(obj, filter, { isInclusion = true } = {}) {
-    if (filter && filter.constructor === Array) {
-        return applyFilterOnObject(obj, isInclusion ? ((_, key) => filter.indexOf(key) < 0)
-                                                    : ((_, key) => filter.indexOf(key) >= 0));
+    if (filter && Array.isArray(filter)) {
+        return applyFilterOnObject(obj, isInclusion ? ((_, key) => filter.includes(key))
+                                                    : ((_, key) => !filter.includes(key)));
     } else if (filter && typeof filter === 'function') {
         // Flip the filter fn's return if it's for inclusion
-        return applyFilterOnObject(obj, isInclusion ? (...args) => !filter(...args)
-                                                    : filter);
+        return applyFilterOnObject(obj, isInclusion ? filter
+                                                    : (...args) => !filter(...args));
     } else {
         throw new Error('The given filter is not an array or function. Exclude aborted');
     }
