@@ -248,9 +248,10 @@ export function omitFromObject(obj, filter) {
  *
  * Has two call signatures:
  *   1. safeInvoke({
- *          fn: function,
- *          params: array of params or function for lazily computing parameters,
- *          error: Error to throw if function not invoked
+ *          fn:      Function to invoke,
+ *          context: Context to invoke function with
+ *          params:  Array of params or function for lazily computing parameters,
+ *          error:   Error to throw if function not invoked
  *      });
  *   2. safeInvoke(fn, param1, param2, param3, ...);
  *
@@ -258,14 +259,15 @@ export function omitFromObject(obj, filter) {
  * function if it exists with the given params.
  *
  * @param  {object}         options
- * @param  {any}            options.fn     Function to invoke
- * @param  {array|function} options.params Arguments to be passed into the function.
- *                                         If this is a function, the resulting array of the function
- *                                         will be passed as params into the function.
- * @param  {Error}          options.error  Error to be thrown if the function is not invoked.
- * @return {object}                        Return object specifying:
- *                                           result - the result of the function (if invoked)
- *                                           invoked - whether or not the function was invoked
+ * @param  {any}            options.fn      Function to invoke
+ * @param  {any}            options.context Context to invoke function with
+ * @param  {array|function} options.params  Arguments to be passed into the function.
+ *                                          If this is a function, the resulting array of the function
+ *                                          will be passed as params into the function.
+ * @param  {Error}          options.error   Error to be thrown if the function is not invoked.
+ * @return {object}                         Return object specifying:
+ *                                            result - the result of the function (if invoked)
+ *                                            invoked - whether or not the function was invoked
  */
 export function safeInvoke(fnOrConfig, ...paramsForFn) {
     let config;
@@ -412,7 +414,7 @@ function filterFromObject(obj, filter, { isInclusion = true } = {}) {
     }
 }
 
-function safeInvokeForConfig({ fn, params, error }) {
+function safeInvokeForConfig({ fn, context, params, error }) {
     if (typeof fn === 'function') {
         if (typeof params === 'function') {
             params = params();
@@ -428,7 +430,7 @@ function safeInvokeForConfig({ fn, params, error }) {
 
         return {
             invoked: true,
-            result: fn(...params)
+            result: fn.apply(context, params)
         };
     } else {
         if (error) {
