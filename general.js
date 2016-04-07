@@ -1,3 +1,5 @@
+import coreIncludes from 'core-js/library/fn/array/includes';
+
 /**
  * Checks shallow equality
  * Re-export of shallow from shallow-equals
@@ -102,7 +104,7 @@ export function formatText() {
  * @return {Array} Intersected list of a and b
  */
 export function intersectLists(a, b) {
-    return a.filter((val) => b.includes(val));
+    return a.filter((val) => coreIncludes(b, val));
 }
 
 /**
@@ -403,8 +405,8 @@ function applyFilterOnObject(obj, filterFn) {
  */
 function filterFromObject(obj, filter, { isInclusion = true } = {}) {
     if (filter && Array.isArray(filter)) {
-        return applyFilterOnObject(obj, isInclusion ? ((_, key) => filter.includes(key))
-                                                    : ((_, key) => !filter.includes(key)));
+        return applyFilterOnObject(obj, isInclusion ? ((_, key) => coreIncludes(filter, key))
+                                                    : ((_, key) => !coreIncludes(filter, key)));
     } else if (filter && typeof filter === 'function') {
         // Flip the filter fn's return if it's for inclusion
         return applyFilterOnObject(obj, isInclusion ? filter
