@@ -22,18 +22,16 @@ export function arrayFrom(arrayLike) {
 }
 
 /**
- * Recursively tests an object against a "match" object to see if the
- * object is similar to the "match" object. In other words, this will
- * deeply traverse the "match" object's properties and check them
- * against the object by using the testFn.
+ * Recursively tests an object against a "match" object to see if the object is similar to the
+ * "match" object. In other words, this will deeply traverse the "match" object's properties and
+ * check them against the object by using the testFn.
  *
- * The object is considered a match if all primitive properties in the
- * "match" object are found and accepted in the object by the testFn.
+ * The object is considered a match if all primitive properties in the "match" object are found
+ * and accepted in the object by the testFn.
  *
  * @param  {object}     obj    Object to test
  * @param  {object}     match  "Match" object to test against
- * @param  {(function)} testFn Function to use on each property test.
- *                             Return true to accept the match.
+ * @param  {(function)} testFn Function to use on each property test. Return true to accept the match.
  *                             By default, applies strict equality using ===
  * @return {boolean}           True if obj matches the "match" object
  */
@@ -65,6 +63,7 @@ export function deepMatchObject(obj, match, testFn = (objProp, matchProp) => obj
 /**
  * Taken from http://stackoverflow.com/a/4795914/1263876
  * Behaves like C's format string function
+ * FIXME: replace with https://github.com/alexei/sprintf.js
  */
 export function formatText() {
     let args = arguments,
@@ -274,14 +273,9 @@ function applyFilterOnObject(obj, filterFn) {
 }
 
 /**
- * Abstraction for selectFromObject and omitFromObject for DRYness
- *
- * @param {object}         obj
- * @param {array|function} filter
- * @param {object}         options
- * @param {boolean}        options.isInclusion True if the filter should be for including the
- *                                             filtered items (ie. selecting only them vs omitting
- *                                             only them)
+ * Abstraction for selectFromObject and omitFromObject for DRYness.
+ * Set isInclusion to true if the filter should be for including the filtered items (ie. selecting
+ * only them vs omitting only them).
  */
 function filterFromObject(obj, filter, { isInclusion = true } = {}) {
     if (filter && Array.isArray(filter)) {
@@ -296,6 +290,9 @@ function filterFromObject(obj, filter, { isInclusion = true } = {}) {
     }
 }
 
+/**
+ * Abstraction for safeInvoke's two call signatures
+ */
 function safeInvokeForConfig({ fn, context, params, error }) {
     if (typeof fn === 'function') {
         if (typeof params === 'function') {
