@@ -295,21 +295,23 @@ function filterFromObject(obj, filter, { isInclusion = true } = {}) {
  */
 function safeInvokeForConfig({ fn, context, params, error }) {
     if (typeof fn === 'function') {
+        let fnParams = params;
         if (typeof params === 'function') {
-            params = params();
-        } else if (params === undefined) {
-            params = [];
+            fnParams = params();
         }
 
-        // Make sure params is still an array even after any lazy computation
-        if (!Array.isArray(params)) {
-            console.warn("Params to pass to safeInvoke's fn is not an array. Ignoring...", params);
-            params = [];
+        // Warn if params or lazily evaluated params were given but not in an array
+        if (fnParams != null && !Array.isArray(fnParams)) {
+            // eslint-disable-next-line no-console
+            console.warn("Params to pass to safeInvoke's fn is not an array. Ignoring...",
+                         fnParams);
+
+            fnParams = null;
         }
 
         return {
             invoked: true,
-            result: fn.apply(context, params)
+            result: fn.apply(context, fnParams)
         };
     } else {
         if (error) {
