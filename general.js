@@ -200,7 +200,7 @@ export function safeMerge(...l) {
  * @return {object}          Sanitized Javascript object
  */
 export function sanitize(obj) {
-    return omitFromObject(obj, (val) => !val);
+    return selectFromObject(obj, (val) => !!val);
 }
 
 /**
