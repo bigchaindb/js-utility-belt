@@ -102,20 +102,9 @@ export function intersectLists(a, b) {
 }
 
 /**
- * Takes a list of object and merges their keys to one object.
- * Uses mergeOptions for two objects.
- * @param  {[type]} l [description]
- * @return {[type]}   [description]
+ * Noop function that can be stuffed into required callback props
  */
-export function mergeOptions(...l) {
-    // If the objects submitted in the list have duplicates,in their key names,
-    // abort the merge and tell the function's user to check his objects.
-    if (_doesObjectListHaveDuplicates(l)) {
-        throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
-    }
-
-    return Object.assign({}, ...l);
-}
+export function noop() {}
 
 /**
  * Similar to lodash's _.omit(), this returns a copy of the given object's
