@@ -1,0 +1,27 @@
+{
+    'plugins': [
+        'transform-inline-environment-variables',
+        'transform-export-extensions',
+        'transform-object-assign',
+        'transform-object-rest-spread'
+    ],
+    'sourceMaps': true,
+
+    'env': {
+        'bundle': {
+            'presets': ['es2015-no-commonjs'],
+            'plugins': [
+                ['transform-runtime', {
+                    'polyfill': false,
+                    'regenerator': false
+                } ]
+            ]
+        },
+        'cjs': {
+            'presets': ['es2015']
+        },
+        'es6': {
+            'presets': ['es2015-no-commonjs']
+        }
+    }
+}
