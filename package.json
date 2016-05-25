@@ -47,6 +47,7 @@
     "camelcase": "^3.0.0",
     "core-js": "^2.4.0",
     "decamelize": "^1.2.0",
+    "isomorphic-fetch": "^2.2.1",
     "js-cookie": "^2.1.1",
     "query-string": "^4.1.0",
     "shallow-equals": "0.0.0"
