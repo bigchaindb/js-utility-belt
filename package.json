@@ -1,7 +1,7 @@
 {
   "name": "js-utility-belt",
   "version": "1.0.0",
-  "description": "Grab bag of useful, reusable utilities for common tasks",
+  "description": "Opinionated collection of JavaScript nice-to-haves",
   "homepage": "https://www.bigchain.io/",
   "bugs": "https://github.com/bigchain/js-utility-belt/issues",
   "license": "Apache-2.0",
