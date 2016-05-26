@@ -8,6 +8,9 @@
   "author": "BigchainDB",
   "main": "cjs/index.js",
   "jsnext:main": "es6/index.js",
+  "directories": {
+    "lib": "lib/"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bigchaindb/js-utility-belt.git"
