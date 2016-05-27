@@ -22,6 +22,7 @@
     "build:cjs": "rimraf ./cjs && NODE_ENV=production BABEL_ENV=cjs babel ./lib -d cjs",
     "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./lib -d es6",
     "clean": "rimraf ./bundle ./cjs ./es6",
+    "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
