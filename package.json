@@ -1,0 +1,59 @@
+{
+  "name": "js-utility-belt",
+  "version": "1.0.0",
+  "description": "Opinionated collection of JavaScript nice-to-haves",
+  "homepage": "https://www.bigchain.io/",
+  "bugs": "https://github.com/bigchain/js-utility-belt/issues",
+  "license": "Apache-2.0",
+  "author": "BigchainDB",
+  "main": "cjs/index.js",
+  "jsnext:main": "es6/index.js",
+  "directories": {
+    "lib": "lib/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigchaindb/js-utility-belt.git"
+  },
+  "scripts": {
+    "lint": "eslint ./",
+    "build": "npm run build:bundle && npm run build:cjs && npm run build:es6",
+    "build:bundle": "rimraf ./bundle && NODE_ENV=production BABEL_ENV=bundle webpack -p",
+    "build:cjs": "rimraf ./cjs && NODE_ENV=production BABEL_ENV=cjs babel ./lib -d cjs",
+    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./lib -d es6",
+    "clean": "rimraf ./bundle ./cjs ./es6",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.6.5",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.8.0",
+    "babel-plugin-transform-export-extensions": "^6.8.0",
+    "babel-plugin-transform-inline-environment-variables": "^6.8.0",
+    "babel-plugin-transform-object-assign": "^6.5.0",
+    "babel-plugin-transform-object-rest-spread": "^6.6.5",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015-no-commonjs": "0.0.2",
+    "dotenv": "^2.0.0",
+    "eslint": "^2.10.2",
+    "eslint-config-ascribe": "^1.0.1",
+    "eslint-plugin-import": "^1.8.0",
+    "eslint-plugin-jsx-a11y": "^1.2.2",
+    "eslint-plugin-react": "^5.1.1",
+    "rimraf": "^2.5.2",
+    "webpack": "^2.1.0-beta.6"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.9.0",
+    "browser-locale": "^1.0.0",
+    "camelcase": "^3.0.0",
+    "core-js": "^2.4.0",
+    "decamelize": "^1.2.0",
+    "isomorphic-fetch": "^2.2.1",
+    "js-cookie": "^2.1.1",
+    "query-string": "^4.1.0",
+    "shallow-equals": "0.0.0",
+    "sprintf-js": "^1.0.3"
+  }
+}
