@@ -1,17 +1,17 @@
 {
   "name": "js-utility-belt",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Opinionated collection of JavaScript nice-to-haves",
   "homepage": "https://www.bigchain.io/",
   "bugs": "https://github.com/bigchain/js-utility-belt/issues",
   "license": "Apache-2.0",
   "author": "BigchainDB",
   "files": [
-      "*.md",
-      "bundle",
-      "cjs",
-      "es6",
-      "lib"
+    "*.md",
+    "bundle",
+    "cjs",
+    "es6",
+    "lib"
   ],
   "main": "cjs/index.js",
   "jsnext:main": "es6/index.js",
