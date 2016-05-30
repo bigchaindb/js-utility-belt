@@ -38,7 +38,6 @@ polyfills (ie. `Symbol`) as babel doesn't include them.
 
 ### Reducing import size
 
-Style guide
 Importing from the base index of either of the transpiled versions (`/lib` or `/es6`) will import
 the entire package (even with treeshaking!). To make sure you only import what you need, you can
 import just the module (ie. `lib/general`, `lib/cookie`, etc...) or even just the particular
@@ -47,7 +46,24 @@ function (ie. `lib/general/safe_merge`, `lib/cookie/get_cookie`) that you want.
 If you have treeshaking enabled, you can safely import from the ES6 version at the module level and
 let treeshaking remove any unused imports from the module (making function-level imports
 unnecessary).
+
+
+Development
 -----------
+
+Any added functions or modules should be structured to allow for selective imports by the user. With
+this in mind, there are two rules to follow:
+
+* Modules: Each module should be its own folder
+  * Modules should include a `index.js` that re-exports all contained functions
+  * Modules should be re-exported through the package's [index.js](./src/index.js) with an
+    [extended-export-from](https://github.com/leebyron/ecmascript-more-export-from) statement:
+    `export * as Module from './module'`
+* Functions: Each function should be contained in its own file, adhering to the
+  [style guide](#style-guide)'s naming scheme: the file name should be the snake_case form of the
+  function's name.
+
+### Style guide
 
 See the [ascribe/javascript](https://github.com/ascribe/javascript) styleguide.
 
