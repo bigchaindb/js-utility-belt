@@ -17,6 +17,8 @@ import stringifyAsQueryParam from './url/stringify_as_query_param';
  *                          `config.urlTemplateSpec`.
  * @param  {object}  config Additional configuration, mostly passed to fetch as its 'init' config
  *                          (see https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
+ * @param  {*}             config.jsonBody        Json payload to the request. Will automatically be
+ *                                                JSON.stringify()-ed and override `config.body`.
  * @param  {string|object} config.query           Query parameter to append to the end of the url.
  *                                                If specified as an object, keys will be
  *                                                decamelized into snake case first.
@@ -26,14 +28,16 @@ import stringifyAsQueryParam from './url/stringify_as_query_param';
  * @return {Promise}        Promise that will resolve with the response if its status was 2xx;
  *                          otherwise rejects with the response
  */
-export default function request(url, { query, urlTemplateSpec, ...fetchConfig }) {
+export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetchConfig }) {
     let expandedUrl = url;
 
     if (urlTemplateSpec != null) {
         if (Array.isArray(urlTemplateSpec) && urlTemplateSpec.length) {
             // Use vsprintf for the array call signature
             expandedUrl = vsprintf(url, urlTemplateSpec);
-        } else if (typeof urlTemplateSpec === 'object' && Object.keys(urlTemplateSpec).length) {
+        } else if (urlTemplateSpec &&
+                   typeof urlTemplateSpec === 'object' &&
+                   Object.keys(urlTemplateSpec).length) {
             expandedUrl = sprintf(url, urlTemplateSpec);
         } else if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
@@ -42,14 +46,18 @@ export default function request(url, { query, urlTemplateSpec, ...fetchConfig })
     }
 
     if (query != null) {
-        if (typeof query === 'object') {
-            expandedUrl += stringifyAsQueryParam(query);
-        } else if (typeof query === 'string') {
+        if (typeof query === 'string') {
             expandedUrl += query;
+        } else if (query && typeof query === 'object') {
+            expandedUrl += stringifyAsQueryParam(query);
         } else if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
             console.warn('Supplied query was not a string or object. Ignoring...');
         }
+    }
+
+    if (jsonBody != null) {
+        fetchConfig.body = JSON.stringify(jsonBody);
     }
 
     return fetch(expandedUrl, fetchConfig)
