@@ -7,9 +7,7 @@
  * @return {number} position.x Horizontal scroll from the left
  * @return {number} position.y Vertical scroll from the top
  */
-// Ignore error as we may have more exports in the future
-// eslint-disable-next-line import/prefer-default-export
-export function getScrollPosition() {
+export default function getScrollPosition() {
     const supportPageOffset = window.pageXOffset !== undefined;
     const isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
 
