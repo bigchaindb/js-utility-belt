@@ -1,7 +1,6 @@
-import 'isomorphic-fetch';
-
 /**
- * Global fetch wrapper that adds some basic error handling
+ * Global fetch wrapper that adds some basic error handling.
+ * Expects fetch to already be available (either bundled through webpack or a polyfill).
  *
  * @param  {string}  url    Url to request
  * @param  {object}  config Fetch config (see https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters)

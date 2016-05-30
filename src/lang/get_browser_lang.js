@@ -7,8 +7,6 @@ import browserLocale from 'browser-locale';
  *
  * @return {string} Current browser language
  */
-// Ignore error as we may have more exports in the future
-// eslint-disable-next-line import/prefer-default-export
-export function getBrowserLang() {
+export default function getBrowserLang() {
     return browserLocale();
 }

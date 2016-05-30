@@ -9,11 +9,10 @@
   "files": [
     "*.md",
     "bundle",
-    "cjs",
     "es6",
     "lib"
   ],
-  "main": "cjs/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
   "directories": {
     "lib": "lib/"
@@ -26,9 +25,9 @@
     "lint": "eslint ./",
     "build": "npm run build:bundle && npm run build:cjs && npm run build:es6",
     "build:bundle": "rimraf ./bundle && NODE_ENV=production BABEL_ENV=bundle webpack -p",
-    "build:cjs": "rimraf ./cjs && NODE_ENV=production BABEL_ENV=cjs babel ./lib -d cjs",
-    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./lib -d es6",
-    "clean": "rimraf ./bundle ./cjs ./es6",
+    "build:cjs": "rimraf ./lib && NODE_ENV=production BABEL_ENV=cjs babel ./src -d lib",
+    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./src -d es6",
+    "clean": "rimraf ./bundle ./es6 ./lib",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -49,6 +48,8 @@
     "eslint-plugin-import": "^1.8.0",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.1.1",
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.6.5",
     "rimraf": "^2.5.2",
     "webpack": "^2.1.0-beta.6"
   },
@@ -58,10 +59,11 @@
     "camelcase": "^3.0.0",
     "core-js": "^2.4.0",
     "decamelize": "^1.2.0",
-    "isomorphic-fetch": "^2.2.1",
+    "es6-promise": "^3.2.1",
     "js-cookie": "^2.1.1",
     "query-string": "^4.1.0",
     "shallow-equals": "0.0.0",
-    "sprintf-js": "^1.0.3"
+    "sprintf-js": "^1.0.3",
+    "whatwg-fetch": "^1.0.0"
   }
 }

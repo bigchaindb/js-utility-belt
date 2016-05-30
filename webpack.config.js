@@ -11,7 +11,7 @@ require('dotenv').load({ silent: true });
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 const PATHS = {
-    ENTRY: path.resolve(__dirname, 'lib/index.js'),
+    ENTRY: path.resolve(__dirname, 'src/index.js'),
     BUNDLE: path.resolve(__dirname, 'bundle'),
     NODE_MODULES: path.resolve(__dirname, 'node_modules'),
 };
@@ -21,8 +21,6 @@ const PATHS = {
 const DEFINITIONS = {
     'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development'),
-
-        // Add additional environment variable definitions
     },
 };
 
@@ -31,8 +29,10 @@ const DEFINITIONS = {
 const PLUGINS = [
     new webpack.DefinePlugin(DEFINITIONS),
     new webpack.NoErrorsPlugin(),
-
-    // Add additional base plugins
+    new webpack.ProvidePlugin({
+        Promise: 'imports?this=>global!exports?global.Promise!es6-promise',
+        fetch: 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+    }),
 ];
 
 const PROD_PLUGINS = [
@@ -48,8 +48,6 @@ const PROD_PLUGINS = [
         debug: false,
         minimize: true
     }),
-
-    // Add additional production plugins
 ];
 
 if (PRODUCTION) {
