@@ -1,8 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /**
  * In general you should look towards using something like Modernizr before adding a feature detect
  * but sometimes you just have to roll your own.
@@ -10,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
  * PLEASE postfix your function with '-Available', like this:
  *   featureNameAvailable
  */
+
 
 /**
  * Even though it is not recommended to check (and maintain) the used browser,
@@ -23,4 +19,5 @@ Object.defineProperty(exports, "__esModule", {
  */
 // Ignore error as we may have more exports in the future
 // eslint-disable-next-line import/prefer-default-export
-var dragAndDropAvailable = exports.dragAndDropAvailable = 'draggable' in document.createElement('div') && !/Mobile|Android|Slick\/|Kindle|BlackBerry|Opera Mini|Opera Mobi/i.test(navigator.userAgent);
+export const dragAndDropAvailable = 'draggable' in document.createElement('div') &&
+    !/Mobile|Android|Slick\/|Kindle|BlackBerry|Opera Mini|Opera Mobi/i.test(navigator.userAgent);

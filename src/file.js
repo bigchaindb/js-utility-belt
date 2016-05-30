@@ -1,10 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.extractFileExtensionFromString = extractFileExtensionFromString;
-exports.extractFileExtensionFromUrl = extractFileExtensionFromUrl;
 /**
  * Extracts a file extension from a string, by splitting by dot and taking the last substring.
  *
@@ -14,9 +7,10 @@ exports.extractFileExtensionFromUrl = extractFileExtensionFromUrl;
  *
  * Via: http://stackoverflow.com/a/190878/1263876
  */
-function extractFileExtensionFromString(fileName) {
-  var explodedFileName = fileName.split('.');
-  return explodedFileName.length > 1 ? explodedFileName.pop() : '';
+export function extractFileExtensionFromString(fileName) {
+    const explodedFileName = fileName.split('.');
+    return explodedFileName.length > 1 ? explodedFileName.pop()
+                                       : '';
 }
 
 /**
@@ -26,7 +20,7 @@ function extractFileExtensionFromString(fileName) {
  * @param  {string} url Url ending in a file name
  * @return {string}     File extension
  */
-function extractFileExtensionFromUrl(url) {
-  var fileName = url.split('/').pop();
-  return extractFileExtensionFromString(fileName);
+export function extractFileExtensionFromUrl(url) {
+    const fileName = url.split('/').pop();
+    return extractFileExtensionFromString(fileName);
 }

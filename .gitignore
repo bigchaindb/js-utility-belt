@@ -13,7 +13,7 @@
 .env
 
 bundle/*
-cjs/*
 es6/*
+lib/*
 
 node_modules/*

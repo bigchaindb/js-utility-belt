@@ -1,11 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = request;
-
-require('isomorphic-fetch');
+import 'isomorphic-fetch';
 
 /**
  * Global fetch wrapper that adds some basic error handling
@@ -15,12 +8,13 @@ require('isomorphic-fetch');
  * @return {Promise}        Promise that will resolve with the response if its status was 2xx;
  *                          otherwise rejects with the response
  */
-function request(url, config) {
-    return fetch(url, config).then(function (res) {
-        // If status is not a 2xx, assume it's an error
-        if (!(res.status >= 200 && res.status <= 300)) {
-            throw res;
-        }
-        return res;
-    });
+export default function request(url, config) {
+    return fetch(url, config)
+        .then((res) => {
+            // If status is not a 2xx, assume it's an error
+            if (!(res.status >= 200 && res.status <= 300)) {
+                throw res;
+            }
+            return res;
+        });
 }

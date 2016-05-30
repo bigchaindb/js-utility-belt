@@ -1,60 +1,19 @@
-'use strict';
+import coreIncludes from 'core-js/library/fn/array/includes';
+import coreObjectEntries from 'core-js/library/fn/object/entries';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.formatText = exports.sprintf = exports.isShallowEqual = undefined;
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+/**
+ * Checks shallow equality
+ * Re-export of shallow from shallow-equals
+ */
+export { default as isShallowEqual } from 'shallow-equals';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-var _shallowEquals = require('shallow-equals');
-
-Object.defineProperty(exports, 'isShallowEqual', {
-    enumerable: true,
-    get: function get() {
-        return _interopRequireDefault(_shallowEquals).default;
-    }
-});
-
-var _sprintfJs = require('sprintf-js');
-
-Object.defineProperty(exports, 'sprintf', {
-    enumerable: true,
-    get: function get() {
-        return _sprintfJs.sprintf;
-    }
-});
-Object.defineProperty(exports, 'formatText', {
-    enumerable: true,
-    get: function get() {
-        return _sprintfJs.sprintf;
-    }
-});
-exports.arrayFrom = arrayFrom;
-exports.deepMatchObject = deepMatchObject;
-exports.intersectLists = intersectLists;
-exports.noop = noop;
-exports.omitFromObject = omitFromObject;
-exports.safeInvoke = safeInvoke;
-exports.safeMerge = safeMerge;
-exports.sanitize = sanitize;
-exports.sanitizeList = sanitizeList;
-exports.selectFromObject = selectFromObject;
-exports.truncateTextAtCharIndex = truncateTextAtCharIndex;
-
-var _includes = require('core-js/library/fn/array/includes');
-
-var _includes2 = _interopRequireDefault(_includes);
-
-var _entries = require('core-js/library/fn/object/entries');
-
-var _entries2 = _interopRequireDefault(_entries);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/**
+ * Formats strings similarly to C's sprintf
+ * Re-export of sprintf from sprintf-js
+ * See https://github.com/alexei/sprintf.js for documentation on usage
+ */
+export { sprintf, sprintf as formatText } from 'sprintf-js';
 
 /**
  * Dumb shim to convert array-like data structures to an iterable format (ie. array)
@@ -63,12 +22,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param  {object} arrayLike Array like object
  * @return {any[]}            Actual array containing the same objects in arrayLike
  */
-function arrayFrom(arrayLike) {
-    var array = [];
+export function arrayFrom(arrayLike) {
+    const array = [];
 
-    Array.prototype.forEach.call(arrayLike, function (item) {
-        return array.push(item);
-    });
+    Array.prototype.forEach.call(arrayLike, (item) => array.push(item));
 
     return array;
 }
@@ -87,32 +44,29 @@ function arrayFrom(arrayLike) {
  *                             By default, applies strict equality using ===
  * @return {boolean}           True if obj matches the "match" object
  */
-function deepMatchObject(obj, match) {
-    var testFn = arguments.length <= 2 || arguments[2] === undefined ? function (objProp, matchProp) {
-        return objProp === matchProp;
-    } : arguments[2];
-
-    if ((typeof match === 'undefined' ? 'undefined' : _typeof(match)) !== 'object') {
+export function deepMatchObject(obj, match, testFn = (objProp, matchProp) => objProp === matchProp) {
+    if (typeof match !== 'object') {
         throw new Error('Your specified match argument was not an object');
     }
     if (typeof testFn !== 'function') {
         throw new Error('Your specified test function was not a function');
     }
 
-    return Object.keys(match).reduce(function (result, matchKey) {
-        if (!result) {
-            return false;
-        }
+    return Object
+            .keys(match)
+            .reduce((result, matchKey) => {
+                if (!result) { return false; }
 
-        var objProp = obj && obj[matchKey];
-        var matchProp = match[matchKey];
+                const objProp = obj && obj[matchKey];
+                const matchProp = match[matchKey];
 
-        if ((typeof matchProp === 'undefined' ? 'undefined' : _typeof(matchProp)) === 'object') {
-            return (typeof objProp === 'undefined' ? 'undefined' : _typeof(objProp)) === 'object' ? deepMatchObject(objProp, matchProp, testFn) : false;
-        } else {
-            return testFn(objProp, matchProp);
-        }
-    }, true);
+                if (typeof matchProp === 'object') {
+                    return (typeof objProp === 'object') ? deepMatchObject(objProp, matchProp, testFn)
+                                                         : false;
+                } else {
+                    return testFn(objProp, matchProp);
+                }
+            }, true);
 }
 
 /**
@@ -121,16 +75,14 @@ function deepMatchObject(obj, match) {
  * @param  {Array} b
  * @return {Array} Intersected list of a and b
  */
-function intersectLists(a, b) {
-    return a.filter(function (val) {
-        return (0, _includes2.default)(b, val);
-    });
+export function intersectLists(a, b) {
+    return a.filter((val) => coreIncludes(b, val));
 }
 
 /**
  * Noop function that can be stuffed into required callback props
  */
-function noop() {}
+export function noop() {}
 
 /**
  * Similar to lodash's _.omit(), this returns a copy of the given object's
@@ -140,7 +92,7 @@ function noop() {}
  * @param  {array|function} filter Array of key names to omit or function to invoke per iteration
  * @return {object}                The new object
 */
-function omitFromObject(obj, filter) {
+export function omitFromObject(obj, filter) {
     return filterFromObject(obj, filter, { isInclusion: false });
 }
 
@@ -171,12 +123,8 @@ function omitFromObject(obj, filter) {
  *                                            result - the result of the function (if invoked)
  *                                            invoked - whether or not the function was invoked
  */
-function safeInvoke(fnOrConfig) {
-    for (var _len = arguments.length, paramsForFn = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        paramsForFn[_key - 1] = arguments[_key];
-    }
-
-    var config = void 0;
+export function safeInvoke(fnOrConfig, ...paramsForFn) {
+    let config;
 
     if (fnOrConfig && fnOrConfig.hasOwnProperty('fn')) {
         // First param is a config object (first call signature)
@@ -200,18 +148,14 @@ function safeInvoke(fnOrConfig) {
  * @param  {...Object} l Any number of objects to merge
  * @return {Object}      Merged object
  */
-function safeMerge() {
-    for (var _len2 = arguments.length, l = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        l[_key2] = arguments[_key2];
-    }
-
+export function safeMerge(...l) {
     // If the objects submitted in the list have duplicates in their key names,
     // abort the merge and tell the function's user to check his objects.
     if (doesObjectListHaveDuplicates(l)) {
         throw new Error('The objects you submitted for merging have duplicates. Merge aborted.');
     }
 
-    return _extends.apply(undefined, [{}].concat(l));
+    return Object.assign({}, ...l);
 }
 
 /**
@@ -222,10 +166,8 @@ function safeMerge() {
  * @param  {object} obj      Javascript object
  * @return {object}          Sanitized Javascript object
  */
-function sanitize(obj) {
-    return selectFromObject(obj, function (val) {
-        return !!val;
-    });
+export function sanitize(obj) {
+    return selectFromObject(obj, (val) => !!val);
 }
 
 /**
@@ -234,10 +176,8 @@ function sanitize(obj) {
  * @param  {array} l Array to sanitize
  * @return {array}   Sanitized array
  */
-function sanitizeList(l) {
-    return l.filter(function (val) {
-        return !!val;
-    });
+export function sanitizeList(l) {
+    return l.filter((val) => !!val);
 }
 
 /**
@@ -248,7 +188,7 @@ function sanitizeList(l) {
  * @param  {array|function} filter Array of key names to select or function to invoke per iteration
  * @return {object}                The new object
 */
-function selectFromObject(obj, filter) {
+export function selectFromObject(obj, filter) {
     return filterFromObject(obj, filter);
 }
 
@@ -261,10 +201,8 @@ function selectFromObject(obj, filter) {
  *                              This string will only be used if there is still text after truncIndex.
  * @return {string}             The truncated text
  */
-function truncateTextAtCharIndex(text, truncIndex) {
-    var replacement = arguments.length <= 2 || arguments[2] === undefined ? '...' : arguments[2];
-
-    return text.length > truncIndex ? text.slice(0, truncIndex) + replacement : text;
+export function truncateTextAtCharIndex(text, truncIndex, replacement = '...') {
+    return text.length > truncIndex ? (text.slice(0, truncIndex) + replacement) : text;
 }
 
 /** Helpers **/
@@ -272,9 +210,9 @@ function truncateTextAtCharIndex(text, truncIndex) {
  * Checks a list of objects for key duplicates and returns a boolean
  */
 function doesObjectListHaveDuplicates(l) {
-    var mergedList = l.reduce(function (merged, obj) {
-        return obj ? merged.concat(Object.keys(obj)) : merged;
-    }, []);
+    const mergedList = l.reduce((merged, obj) => (
+        obj ? merged.concat(Object.keys(obj)) : merged
+    ), []);
 
     // Taken from: http://stackoverflow.com/a/7376645/1263876
     // By casting the array to a Set, and then checking if the size of the array
@@ -288,16 +226,11 @@ function doesObjectListHaveDuplicates(l) {
  */
 function applyFilterOnObject(obj, filterFn) {
     if (filterFn == null) {
-        return _extends({}, obj);
+        return Object.assign({}, obj);
     }
 
-    var filteredObj = {};
-    (0, _entries2.default)(obj).forEach(function (_ref) {
-        var _ref2 = _slicedToArray(_ref, 2);
-
-        var key = _ref2[0];
-        var val = _ref2[1];
-
+    const filteredObj = {};
+    coreObjectEntries(obj).forEach(([key, val]) => {
         if (filterFn(val, key)) {
             filteredObj[key] = val;
         }
@@ -311,23 +244,14 @@ function applyFilterOnObject(obj, filterFn) {
  * Set isInclusion to true if the filter should be for including the filtered items (ie. selecting
  * only them vs omitting only them).
  */
-function filterFromObject(obj, filter) {
-    var _ref3 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-    var _ref3$isInclusion = _ref3.isInclusion;
-    var isInclusion = _ref3$isInclusion === undefined ? true : _ref3$isInclusion;
-
+function filterFromObject(obj, filter, { isInclusion = true } = {}) {
     if (filter && Array.isArray(filter)) {
-        return applyFilterOnObject(obj, isInclusion ? function (_, key) {
-            return (0, _includes2.default)(filter, key);
-        } : function (_, key) {
-            return !(0, _includes2.default)(filter, key);
-        });
+        return applyFilterOnObject(obj, isInclusion ? ((_, key) => coreIncludes(filter, key))
+                                                    : ((_, key) => !coreIncludes(filter, key)));
     } else if (filter && typeof filter === 'function') {
         // Flip the filter fn's return if it's for inclusion
-        return applyFilterOnObject(obj, isInclusion ? filter : function () {
-            return !filter.apply(undefined, arguments);
-        });
+        return applyFilterOnObject(obj, isInclusion ? filter
+                                                    : (...args) => !filter(...args));
     } else {
         throw new Error('The given filter is not an array or function. Exclude aborted');
     }
@@ -336,23 +260,19 @@ function filterFromObject(obj, filter) {
 /**
  * Abstraction for safeInvoke's two call signatures
  */
-function safeInvokeForConfig(_ref4) {
-    var fn = _ref4.fn;
-    var context = _ref4.context;
-    var params = _ref4.params;
-    var error = _ref4.error;
-
+function safeInvokeForConfig({ fn, context, params, error }) {
     if (typeof fn === 'function') {
-        var fnParams = params;
+        let fnParams = params;
         if (typeof params === 'function') {
             fnParams = params();
         }
 
         // Warn if params or lazily evaluated params were given but not in an array
         if (fnParams != null && !Array.isArray(fnParams)) {
-            if ('production' !== 'production') {
+            if (process.env.NODE_ENV !== 'production') {
                 // eslint-disable-next-line no-console
-                console.warn("Params to pass into safeInvoke's fn is not an array. Ignoring...", fnParams);
+                console.warn("Params to pass into safeInvoke's fn is not an array. Ignoring...",
+                             fnParams);
             }
 
             fnParams = null;
@@ -366,7 +286,7 @@ function safeInvokeForConfig(_ref4) {
         if (error) {
             if (error instanceof Error) {
                 throw error;
-            } else if ('production' !== 'production') {
+            } else if (process.env.NODE_ENV !== 'production') {
                 // eslint-disable-next-line no-console
                 console.warn('Error given to safeInvoke was not a JS Error. Ignoring...', error);
             }

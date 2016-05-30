@@ -1,9 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.getScrollPosition = getScrollPosition;
 /**
  * Get the current scroll position of the window.
  * Adapted from recommendation by Mozilla:
@@ -15,9 +9,9 @@ exports.getScrollPosition = getScrollPosition;
  */
 // Ignore error as we may have more exports in the future
 // eslint-disable-next-line import/prefer-default-export
-function getScrollPosition() {
-    var supportPageOffset = window.pageXOffset !== undefined;
-    var isCSS1Compat = (document.compatMode || '') === 'CSS1Compat';
+export function getScrollPosition() {
+    const supportPageOffset = window.pageXOffset !== undefined;
+    const isCSS1Compat = ((document.compatMode || '') === 'CSS1Compat');
 
     if (supportPageOffset) {
         return {

@@ -11,7 +11,7 @@ require('dotenv').load({ silent: true });
 const PRODUCTION = process.env.NODE_ENV === 'production';
 
 const PATHS = {
-    ENTRY: path.resolve(__dirname, 'lib/index.js'),
+    ENTRY: path.resolve(__dirname, 'src/index.js'),
     BUNDLE: path.resolve(__dirname, 'bundle'),
     NODE_MODULES: path.resolve(__dirname, 'node_modules'),
 };

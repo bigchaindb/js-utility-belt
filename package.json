@@ -9,11 +9,10 @@
   "files": [
     "*.md",
     "bundle",
-    "cjs",
     "es6",
     "lib"
   ],
-  "main": "cjs/index.js",
+  "main": "lib/index.js",
   "jsnext:main": "es6/index.js",
   "directories": {
     "lib": "lib/"
@@ -26,9 +25,9 @@
     "lint": "eslint ./",
     "build": "npm run build:bundle && npm run build:cjs && npm run build:es6",
     "build:bundle": "rimraf ./bundle && NODE_ENV=production BABEL_ENV=bundle webpack -p",
-    "build:cjs": "rimraf ./cjs && NODE_ENV=production BABEL_ENV=cjs babel ./lib -d cjs",
-    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./lib -d es6",
-    "clean": "rimraf ./bundle ./cjs ./es6",
+    "build:cjs": "rimraf ./lib && NODE_ENV=production BABEL_ENV=cjs babel ./src -d lib",
+    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./src -d es6",
+    "clean": "rimraf ./bundle ./es6 ./lib",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
