@@ -48,6 +48,8 @@
     "eslint-plugin-import": "^1.8.0",
     "eslint-plugin-jsx-a11y": "^1.2.2",
     "eslint-plugin-react": "^5.1.1",
+    "exports-loader": "^0.6.3",
+    "imports-loader": "^0.6.5",
     "rimraf": "^2.5.2",
     "webpack": "^2.1.0-beta.6"
   },
@@ -57,10 +59,11 @@
     "camelcase": "^3.0.0",
     "core-js": "^2.4.0",
     "decamelize": "^1.2.0",
-    "isomorphic-fetch": "^2.2.1",
+    "es6-promise": "^3.2.1",
     "js-cookie": "^2.1.1",
     "query-string": "^4.1.0",
     "shallow-equals": "0.0.0",
-    "sprintf-js": "^1.0.3"
+    "sprintf-js": "^1.0.3",
+    "whatwg-fetch": "^1.0.0"
   }
 }
