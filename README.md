@@ -3,19 +3,8 @@ JS-Utility-Belt
 
 Opinionated collection of JavaScript nice-to-haves.
 
-
-Introduction
-------------
-
-Each and every one of us has probably had to maintain a set of general utilities for a project or
-team, which was created either because its functionality wasn't covered by well-known libraries like
-[lodash](https://lodash.com/), or because its authors hadn't found an appropriate package that
-already covered their needs. This is that set of utilities for JavaScript at BigchainDB.
-
-These utilities come from our experiences of building the frontends of [ascribe.io](www.ascribe.io),
-[whereonthe.net](www.whereonthe.net), and various examples with BigchainDB. Consolidating them here
-allows us to have better tested and more documented utilities across our projects, with less
-redesigning of the wheel when a well-built package from the community meets our needs.
+From the experiences of building the frontends of [ascribe.io](www.ascribe.io),
+[whereonthe.net](www.whereonthe.net), and various examples with BigchainDB.
 
 
 Usage
