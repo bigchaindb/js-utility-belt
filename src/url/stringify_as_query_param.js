@@ -27,7 +27,7 @@ import queryString from 'query-string';
  * @return {string}                          Query param string
  */
 export default function stringifyAsQueryParam(obj, transform = decamelize) {
-    if (typeof obj !== 'object' || !obj) {
+    if (!obj || typeof obj !== 'object' || !Object.keys(obj).length) {
         return '';
     }
 
