@@ -24,9 +24,9 @@
   "scripts": {
     "lint": "eslint ./",
     "build": "npm run build:bundle && npm run build:cjs && npm run build:es6",
-    "build:bundle": "rimraf ./bundle && NODE_ENV=production BABEL_ENV=bundle webpack -p",
-    "build:cjs": "rimraf ./lib && NODE_ENV=production BABEL_ENV=cjs babel ./src -d lib",
-    "build:es6": "rimraf ./es6 && NODE_ENV=production babel ./src -d es6",
+    "build:bundle": "rimraf ./bundle && cross-env NODE_ENV=production BABEL_ENV=bundle webpack -p",
+    "build:cjs": "rimraf ./lib && cross-env NODE_ENV=production BABEL_ENV=cjs babel ./src -d lib",
+    "build:es6": "rimraf ./es6 && cross-env NODE_ENV=production babel ./src -d es6",
     "clean": "rimraf ./bundle ./es6 ./lib",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -42,6 +42,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.6.5",
     "babel-plugin-transform-runtime": "^6.6.0",
     "babel-preset-es2015-no-commonjs": "0.0.2",
+    "cross-env": "^1.0.8",
     "dotenv": "^2.0.0",
     "eslint": "^2.10.2",
     "eslint-config-ascribe": "^1.0.1",
