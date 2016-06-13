@@ -15,15 +15,17 @@
  * function if it exists with the given params.
  *
  * @param  {object}         options
- * @param  {any}            options.fn      Function to invoke
- * @param  {any}            options.context Context to invoke function with
- * @param  {array|function} options.params  Arguments to be passed into the function.
- *                                          If this is a function, the resulting array of the function
- *                                          will be passed as params into the function.
- * @param  {Error}          options.error   Error to be thrown if the function is not invoked.
- * @return {object}                         Return object specifying:
- *                                            result - the result of the function (if invoked)
- *                                            invoked - whether or not the function was invoked
+ * @param  {any}            options.fn           Function to invoke
+ * @param  {any}            options.context      Context to invoke function with
+ * @param  {array|function} options.params       Arguments to be passed into the function.
+ *                                               If this is a function, the resulting array of the
+ *                                               function will be passed as params into the function.
+ * @param  {function}       options.onNotInvoked Function to be called if the `fn` is not invoked.
+ *                                               Convenience option to not have to check the
+ *                                               result's `invoked` property.
+ * @return {object}                              Returns object specifying:
+ *                                                 result - the result of the function (if invoked)
+ *                                                 invoked - whether or not the function was invoked
  */
 export default function safeInvoke(fnOrConfig, ...paramsForFn) {
     let config;
@@ -46,7 +48,7 @@ export default function safeInvoke(fnOrConfig, ...paramsForFn) {
 /**
  * Abstraction for safeInvoke's two call signatures
  */
-function safeInvokeForConfig({ fn, context, params, error }) {
+function safeInvokeForConfig({ fn, context, params, onNotInvoked }) {
     if (typeof fn === 'function') {
         let fnParams = params;
         if (typeof params === 'function') {
@@ -69,13 +71,8 @@ function safeInvokeForConfig({ fn, context, params, error }) {
             result: fn.apply(context, fnParams)
         };
     } else {
-        if (error) {
-            if (error instanceof Error) {
-                throw error;
-            } else if (process.env.NODE_ENV !== 'production') {
-                // eslint-disable-next-line no-console
-                console.warn('Error given to safeInvoke was not a JS Error. Ignoring...', error);
-            }
+        if (typeof onNotInvoked === 'function') {
+            onNotInvoked();
         }
 
         return { invoked: false };
