@@ -66,5 +66,12 @@
     "shallow-equals": "0.0.0",
     "sprintf-js": "^1.0.3",
     "whatwg-fetch": "^1.0.0"
-  }
+  },
+  "keywords": [
+      "fetch",
+      "module",
+      "request",
+      "util",
+      "utils"
+  ]
 }
