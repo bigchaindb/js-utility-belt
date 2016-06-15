@@ -64,8 +64,9 @@ export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetc
 
     return fetch(expandedUrl, fetchConfig)
         .then((res) => {
-            // If status is not a 2xx, assume it's an error
-            if (!(res.status >= 200 && res.status <= 300)) {
+            // If status is not a 2xx (based on Response.ok), assume it's an error
+            // See https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch
+            if (!(res && res.ok)) {
                 throw res;
             }
             return res;
