@@ -1,4 +1,6 @@
-import { sprintf, vsprint } from 'sprintf-js';
+import { vsprintf } from 'sprintf-js';
+
+import formatText from './text/format_text';
 
 import stringifyAsQueryParam from './url/stringify_as_query_param';
 
@@ -38,7 +40,7 @@ export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetc
         } else if (urlTemplateSpec &&
                    typeof urlTemplateSpec === 'object' &&
                    Object.keys(urlTemplateSpec).length) {
-            expandedUrl = sprintf(url, urlTemplateSpec);
+            expandedUrl = formatText(url, urlTemplateSpec);
         } else if (process.env.NODE_ENV !== 'production') {
             // eslint-disable-next-line no-console
             console.warn('Supplied urlTemplateSpec was not an array or object. Ignoring...');
@@ -62,8 +64,9 @@ export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetc
 
     return fetch(expandedUrl, fetchConfig)
         .then((res) => {
-            // If status is not a 2xx, assume it's an error
-            if (!(res.status >= 200 && res.status <= 300)) {
+            // If status is not a 2xx (based on Response.ok), assume it's an error
+            // See https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch
+            if (!(res && res.ok)) {
                 throw res;
             }
             return res;

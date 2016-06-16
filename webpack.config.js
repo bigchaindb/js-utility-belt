@@ -42,7 +42,8 @@ const PROD_PLUGINS = [
         },
         output: {
             comments: false
-        }
+        },
+        sourceMap: true
     }),
     new webpack.LoaderOptionsPlugin({
         debug: false,
