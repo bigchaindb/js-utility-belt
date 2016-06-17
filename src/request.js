@@ -1,8 +1,13 @@
+import { Promise } from 'es6-promise';
+import fetchPonyfill from 'fetch-ponyfill';
 import { vsprintf } from 'sprintf-js';
 
 import formatText from './text/format_text';
 
 import stringifyAsQueryParam from './url/stringify_as_query_param';
+
+
+const fetch = fetchPonyfill(Promise);
 
 
 /**
@@ -30,7 +35,7 @@ import stringifyAsQueryParam from './url/stringify_as_query_param';
  * @return {Promise}        Promise that will resolve with the response if its status was 2xx;
  *                          otherwise rejects with the response
  */
-export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetchConfig }) {
+export default function request(url, { jsonBody, query, urlTemplateSpec, ...fetchConfig } = {}) {
     let expandedUrl = url;
 
     if (urlTemplateSpec != null) {
