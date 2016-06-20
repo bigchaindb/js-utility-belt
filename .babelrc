@@ -14,7 +14,7 @@
                 ['transform-runtime', {
                     'polyfill': true,
                     'regenerator': false
-                } ]
+                }]
             ]
         },
         'cjs': {
