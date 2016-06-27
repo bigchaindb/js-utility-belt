@@ -4,10 +4,11 @@
  *
  * Has two call signatures:
  *   1. safeInvoke({
- *          fn:      Function to invoke,
- *          context: Context to invoke function with
- *          params:  Array of params or function for lazily computing parameters,
- *          error:   Error to throw if function not invoked
+ *          fn:           Function to invoke,
+ *          context:      Context to invoke function with
+ *          params:       Array of params or function for lazily computing parameters,
+ *          onNotInvoked: Function to invoke if the `fn` is not invoked (could be used, for example,
+ *                        to throw an error)
  *      });
  *   2. safeInvoke(fn, param1, param2, param3, ...);
  *
