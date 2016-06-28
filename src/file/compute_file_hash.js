@@ -1,16 +1,28 @@
 import SparkMD5 from 'spark-md5';
 
+import safeInvoke from '../safe_invoke';
+
+
 /**
  * Takes a file, computes the MD5 hash and returns a promise that will resolve with the hash.
  * Adapted from https://github.com/satazor/js-spark-md5
  *
- * @param  {File}    file Javascript File object
- * @return {Promise}      Promise that resolves with the hash of the file as a string
+ * @param  {File}     file         Javascript File object
+ * @param  {function} [onProgress] Progress callback that will be invoked with the current progress
+ *                                 (as a percent) after every chunk is read. Explicitly returning
+ *                                 `false` from this callback will stop and cancel the computation.
+ *   @param  {number}  progress Progress as a percentage.
+ *   @return {boolean}          Return `false` to stop and cancel the computation
+ *
+ * @param  {object}   [options]    Options for computing file hash
+ * @param  {number}   options.chunkSize Size of chunks to read file
+ *
+ * @return {Promise}               Promise that resolves with the hash of the file as a string
  */
-export default function computeFileHash(file) {
+export default function computeFileHash(file, onProgress, options) {
     return new Promise((resolve, reject) => {
         const blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice;
-        const chunkSize = 2097152; // Read in chunks of 2MB
+        const chunkSize = (options && options.chunkSize) || 2097152; // By default, read in chunks of 2MB
         const chunks = Math.ceil(file.size / chunkSize);
         const spark = new SparkMD5.ArrayBuffer();
         const fileReader = new FileReader();
@@ -51,7 +63,11 @@ export default function computeFileHash(file) {
             const nextEnd = start + chunkSize;
             const end = nextEnd >= file.size ? file.size : nextEnd;
 
-            fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            const { result: shouldProgress } = safeInvoke(onProgress, start / file.size * 100);
+
+            if (shouldProgress !== false) {
+                fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            }
         }
 
         loadNext();
