@@ -67,6 +67,9 @@ export default function computeFileHash(file, onProgress, options) {
 
             if (shouldProgress !== false) {
                 fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+            } else {
+                reject(new Error(file.name ? `Hashing cancelled for ${file.name}`
+                                           : 'Hashing cancelled'));
             }
         }
 
