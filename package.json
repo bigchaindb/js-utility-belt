@@ -25,8 +25,8 @@
     "lint": "eslint ./",
     "build": "npm run build:bundle && npm run build:cjs && npm run build:es6",
     "build:bundle": "rimraf ./bundle && cross-env NODE_ENV=production BABEL_ENV=bundle webpack -p",
-    "build:cjs": "rimraf ./lib && cross-env NODE_ENV=production BABEL_ENV=cjs babel ./src -d lib",
-    "build:es6": "rimraf ./es6 && cross-env NODE_ENV=production babel ./src -d es6",
+    "build:cjs": "rimraf ./lib && cross-env BABEL_ENV=cjs babel ./src -d lib",
+    "build:es6": "rimraf ./es6 && cross-env babel ./src -d es6",
     "clean": "rimraf ./bundle ./es6 ./lib",
     "prepublish": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
