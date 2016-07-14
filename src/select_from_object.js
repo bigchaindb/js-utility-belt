@@ -8,7 +8,7 @@ import filterFromObject from './private/filter_from_object';
  * @param  {object}         obj    Source object
  * @param  {array|function} filter Array of key names to select or function to invoke per iteration
  * @return {object}                The new object
-*/
+ */
 export default function selectFromObject(obj, filter) {
     return filterFromObject(obj, filter);
 }
