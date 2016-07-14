@@ -1,6 +1,12 @@
 JS-Utility-Belt
 ===============
 
+[![npm](https://img.shields.io/npm/v/js-utility-belt.svg?maxAge=2592000)](https://www.npmjs.com/package/js-utility-belt)
+[![Dependency Status](https://david-dm.org/bigchaindb/js-utility-belt.svg)](https://david-dm.org/bigchaindb/js-utility-belt)
+[![devDependency Status](https://david-dm.org/bigchaindb/js-utility-belt/dev-status.svg)](https://david-dm.org/bigchaindb/js-utility-belt#info=devDependencies)
+[![Code style](https://img.shields.io/badge/code%20style-ascribe-brightgreen.svg)](https://github.com/ascribe/javascript)
+[![Join the chat at https://gitter.im/bigchaindb/bigchaindb](https://badges.gitter.im/bigchaindb/bigchaindb.svg)](https://gitter.im/bigchaindb/bigchaindb?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Opinionated collection of JavaScript nice-to-haves.
 
 From the experiences of building the frontends of [ascribe.io](www.ascribe.io),
