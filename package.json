@@ -45,7 +45,7 @@
     "cross-env": "^2.0.0",
     "dotenv": "^2.0.0",
     "eslint": "^3.2.2",
-    "eslint-config-ascribe": "^2.5.0",
+    "eslint-config-ascribe": "^2.8.0",
     "eslint-plugin-import": "^1.12.0",
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.6.5",
