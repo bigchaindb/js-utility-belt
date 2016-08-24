@@ -59,7 +59,7 @@
     "core-js": "^2.4.1",
     "decamelize": "^1.2.0",
     "es6-promise": "^3.2.1",
-    "fetch-ponyfill": "^1.0.0",
+    "fetch-ponyfill": "^2.0.1",
     "js-cookie": "^2.1.2",
     "query-string": "^4.2.3",
     "shallow-equals": "0.0.0",
