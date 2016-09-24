@@ -44,7 +44,7 @@
     "babel-preset-es2015-no-commonjs": "0.0.2",
     "cross-env": "^2.0.1",
     "dotenv": "^2.0.0",
-    "eslint": "^3.5.0",
+    "eslint": "^3.6.0",
     "eslint-config-ascribe": "^2.9.0",
     "eslint-plugin-import": "^1.16.0",
     "exports-loader": "^0.6.3",
