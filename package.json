@@ -39,7 +39,7 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.16.0",
     "babel-plugin-transform-export-extensions": "^6.8.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
-    "babel-plugin-transform-object-rest-spread": "^6.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-plugin-transform-runtime": "^6.15.0",
     "babel-preset-es2015-no-commonjs": "0.0.2",
     "cross-env": "^3.0.0",
