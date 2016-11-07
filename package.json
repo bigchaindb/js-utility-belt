@@ -46,7 +46,7 @@
     "dotenv": "^2.0.0",
     "eslint": "^3.9.0",
     "eslint-config-ascribe": "^2.9.0",
-    "eslint-plugin-import": "^2.1.0",
+    "eslint-plugin-import": "^2.2.0",
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.6.5",
     "rimraf": "^2.5.4",
