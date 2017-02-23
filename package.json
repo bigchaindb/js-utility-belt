@@ -50,7 +50,7 @@
     "exports-loader": "^0.6.3",
     "imports-loader": "^0.7.0",
     "rimraf": "^2.6.0",
-    "webpack": "=2.1.0-beta.17"
+    "webpack": "2.2.1"
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
