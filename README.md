@@ -1,6 +1,8 @@
 JS-Utility-Belt
 ===============
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bigchaindb/js-utility-belt.svg)](https://greenkeeper.io/)
+
 [![npm](https://img.shields.io/npm/v/js-utility-belt.svg?maxAge=2592000)](https://www.npmjs.com/package/js-utility-belt)
 [![Dependency Status](https://david-dm.org/bigchaindb/js-utility-belt.svg)](https://david-dm.org/bigchaindb/js-utility-belt)
 [![devDependency Status](https://david-dm.org/bigchaindb/js-utility-belt/dev-status.svg)](https://david-dm.org/bigchaindb/js-utility-belt#info=devDependencies)
